@@ -27,9 +27,24 @@ public class CompanyDao {
 						rs.getString("cp_name"),
 						rs.getString("ceo_jab"),
 						rs.getString("ceo_name"),
-						toDate(rs.getTimestamp("bs_num"))); //////추가예정
+						rs.getString("bs_num"),
+						rs.getString("bs_regnum"),
+						toDate(rs.getTimestamp("founded_date")),
+						rs.getString("hp"),
+						rs.getString("bs_post"),
+						rs.getString("bs_addr"),
+						rs.getString("bs_phone"),
+						rs.getString("bs_fax"),
+						rs.getString("bs_type"),
+						rs.getString("cp_type"),
+						toDate(rs.getTimestamp("calc_start")),
+						toDate(rs.getTimestamp("calc_end")),
+						toDate(rs.getTimestamp("payday")),
+						rs.getString("bs_bank"),
+						rs.getString("bs_account"),
+						rs.getString("bs_acc_name"));
 			}
-			return member;
+			return company;
 		}finally {
 			JdbcUtil.close(rs);
 			JdbcUtil.close(pstmt);
@@ -41,25 +56,40 @@ public class CompanyDao {
 		return date == null ? null : new Date(date.getTime());
 	}
 	
-	public void insert(Connection conn, Member mem) throws SQLException{
-		//Member 객체 정보와 현재시간을 DB에 저장하는 매서드
-		try(PreparedStatement pstmt = conn.prepareStatement("insert into member values(?,?,?,?)")){
-			pstmt.setString(1, mem.getId());
-			pstmt.setString(2, mem.getName());
-			pstmt.setString(3, mem.getPassword());
-			pstmt.setTimestamp(4, new Timestamp(mem.getRegDate().getTime()));
+	public void insert(Connection conn, Company cpn) throws SQLException{
+		//Company 객체 정보와 현재시간을 DB에 저장하는 매서드
+		try(PreparedStatement pstmt = conn.prepareStatement("insert into member values("
+				+ "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")){
+			pstmt.setString(1, cpn.getCp_name());
+			pstmt.setString(2, cpn.getCeo_job());
+			pstmt.setString(3, cpn.getCeo_name());
+			pstmt.setString(4, cpn.getBs_num());
+			pstmt.setString(5, cpn.getBs_regnum());
+			pstmt.setTimestamp(6, new Timestamp(cpn.getFounded_date().getTime()));
+			pstmt.setString(7, cpn.getHp());
+			pstmt.setString(8, cpn.getBs_post());
+			pstmt.setString(9, cpn.getBs_addr());
+			pstmt.setString(10, cpn.getBs_phone());
+			pstmt.setString(11, cpn.getBs_fax());
+			pstmt.setString(12, cpn.getBs_type());
+			pstmt.setString(13, cpn.getCp_type());
+			pstmt.setTimestamp(14, new Timestamp(cpn.getCalc_start().getTime()));
+			pstmt.setTimestamp(15, new Timestamp(cpn.getCalc_end().getTime()));
+			pstmt.setTimestamp(16, new Timestamp(cpn.getPayday().getTime()));
+			pstmt.setString(17, cpn.getBs_bank());
+			pstmt.setString(18, cpn.getBs_account());
+			pstmt.setString(19, cpn.getBs_acc_name());
 			pstmt.executeUpdate();
 		}
 	}
 	
-	public void update(Connection conn, Member member) throws SQLException{
-		//Member 객체의 이름과 비밀번호를 수정하는 매서드
-		try(PreparedStatement pstmt = conn.prepareStatement(
-				"update member set name = ?, password = ? where memberid = ?")){
-			pstmt.setString(1, member.getName());
-			pstmt.setString(2, member.getPassword());
-			pstmt.setString(3, member.getId());
-			pstmt.executeUpdate();
-		}
-	}
+	/*
+	 * public void update(Connection conn, Company cpn) throws SQLException{
+	 * //Company 객체의 이름과 비밀번호를 수정하는 매서드 try(PreparedStatement pstmt =
+	 * conn.prepareStatement(
+	 * "update member set name = ?, password = ? where memberid = ?")){
+	 * pstmt.setString(1, member.getName()); pstmt.setString(2,
+	 * member.getPassword()); pstmt.setString(3, member.getId());
+	 * pstmt.executeUpdate(); } }
+	 */
 }

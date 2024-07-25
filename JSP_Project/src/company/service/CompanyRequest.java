@@ -1,8 +1,9 @@
-package company.model;
+package company.service;
 
 import java.util.Date;
+import java.util.Map;
 
-public class Company {
+public class CompanyRequest {
 	private String cp_name;
 	private String ceo_job;
 	private String ceo_name;
@@ -23,32 +24,8 @@ public class Company {
 	private String bs_account;
 	private String bs_acc_name;
 	
-	public Company(String cp_name, String ceo_job, String ceo_name, String bs_num, String bs_regnum, Date founded_date,
-			String hp, String bs_post, String bs_addr, String bs_phone, String bs_fax, String bs_type, String cp_type,
-			Date calc_start, Date calc_end, Date payday, String bs_bank, String bs_account, String bs_acc_name) {
-		super();
-		this.cp_name = cp_name;
-		this.ceo_job = ceo_job;
-		this.ceo_name = ceo_name;
-		this.bs_num = bs_num;
-		this.bs_regnum = bs_regnum;
-		this.founded_date = founded_date;
-		this.hp = hp;
-		this.bs_post = bs_post;
-		this.bs_addr = bs_addr;
-		this.bs_phone = bs_phone;
-		this.bs_fax = bs_fax;
-		this.bs_type = bs_type;
-		this.cp_type = cp_type;
-		this.calc_start = calc_start;
-		this.calc_end = calc_end;
-		this.payday = payday;
-		this.bs_bank = bs_bank;
-		this.bs_account = bs_account;
-		this.bs_acc_name = bs_acc_name;
-		
-	}
-
+	
+	
 	public String getCp_name() {
 		return cp_name;
 	}
@@ -200,5 +177,34 @@ public class Company {
 	public void setBs_acc_name(String bs_acc_name) {
 		this.bs_acc_name = bs_acc_name;
 	}
+
+	public void validate(Map<String, Boolean> errors) {
+		// 아이디,이름등의 정보가 입력되었는지, password 와 confirmPassword가 일치하지 확인하여
+		// 문제가 있을시 errors 맵에 키<String>과 함께 True를 저장하는 매서드
+		checkEmpty(errors, cp_name, "cp_name");
+		checkEmpty(errors, ceo_job, "ceo_job");
+		checkEmpty(errors, ceo_name, "ceo_name");
+		checkEmpty(errors, bs_num, "bs_num");
+		checkEmpty(errors, bs_regnum, "bs_regnum");
+		checkEmpty(errors, founded_date, "founded_date");
+		checkEmpty(errors, hp, "hp");
+		checkEmpty(errors, bs_post, "bs_post");
+		checkEmpty(errors, bs_addr, "bs_addr");
+		checkEmpty(errors, bs_phone, "bs_phone");
+		checkEmpty(errors, bs_fax, "bs_fax");
+		checkEmpty(errors, bs_type, "bs_type");
+		checkEmpty(errors, cp_type, "cp_type");
+		checkEmpty(errors, calc_start, "calc_start");
+		checkEmpty(errors, calc_end, "calc_end");
+		checkEmpty(errors, payday, "payday");
+		checkEmpty(errors, , "");
+		checkEmpty(errors, , "");
+		checkEmpty(errors, , "");
+		
+	}
 	
+	private void checkEmpty(Map<String, Boolean> errors, String value, String fieldName) {
+		if(value == null || value.isEmpty())
+			errors.put(fieldName, Boolean.TRUE);
+	}
 }
