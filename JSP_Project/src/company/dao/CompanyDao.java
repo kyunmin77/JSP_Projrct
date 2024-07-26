@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import article.model.Article;
 import jdbc.JdbcUtil;
 import company.model.Company;
 
@@ -18,7 +20,7 @@ public class CompanyDao {
 		ResultSet rs = null;
 		try {
 			pstmt = conn.prepareStatement("select * from company where cp_name = ?");
-			pstmt.setString(1, );				// 쿼리문 만들고 ?에 값 대입
+			pstmt.setString(1, id);				// 쿼리문 만들고 ?에 값 대입
 			rs = pstmt.executeQuery();			// rs에 쿼리문 실행결과를 저장
 			Company company = null;
 			if(rs.next()) {
@@ -56,10 +58,14 @@ public class CompanyDao {
 		return date == null ? null : new Date(date.getTime());
 	}
 	
-	public void insert(Connection conn, Company cpn) throws SQLException{
-		//Company 객체 정보와 현재시간을 DB에 저장하는 매서드
-		try(PreparedStatement pstmt = conn.prepareStatement("insert into member values("
-				+ "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")){
+	public Company insert(Connection conn, Company cpn) throws SQLException{
+		PreparedStatement pstmt = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try{
+			pstmt = conn.prepareStatement("insert into member values("
+					+ "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			pstmt.setString(1, cpn.getCp_name());
 			pstmt.setString(2, cpn.getCeo_job());
 			pstmt.setString(3, cpn.getCeo_name());
@@ -79,7 +85,32 @@ public class CompanyDao {
 			pstmt.setString(17, cpn.getBs_bank());
 			pstmt.setString(18, cpn.getBs_account());
 			pstmt.setString(19, cpn.getBs_acc_name());
-			pstmt.executeUpdate();
+			
+			int insertedCount = pstmt.executeUpdate();
+			// 쿼리를 실행하고 영향을 받은 레코드 수를 반환받음
+			
+			if(insertedCount > 0) { // 입력이 정상적으로 수행되었다면
+				stmt = conn.createStatement();
+				rs = stmt.executeQuery("SELECT * "
+						+ "FROM( SELECT cp_name FROM company"
+						+ " ORDER BY ROWNUM DESC )"			// article_no을 내림차순 정렬한 뒤
+						+ "WHERE ROWNUM = 1");				// 첫번째 열 정보를 선택
+		
+				if(rs.next()) {
+					// rs쿼리문에 첫번째필드를 받아옴
+					String cp_name = rs.getString(1);
+					// DB에 저장된 내용과 같은 Article객체를 만들어 반환
+					return new Company(
+							cp_name,
+							);
+				}
+			}
+			return null;		// 입력이 수행되지 않았다면 null 반환
+			
+		}finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(stmt);
+			JdbcUtil.close(pstmt);
 		}
 	}
 	

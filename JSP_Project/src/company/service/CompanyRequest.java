@@ -197,14 +197,18 @@ public class CompanyRequest {
 		checkEmpty(errors, calc_start, "calc_start");
 		checkEmpty(errors, calc_end, "calc_end");
 		checkEmpty(errors, payday, "payday");
-		checkEmpty(errors, , "");
-		checkEmpty(errors, , "");
-		checkEmpty(errors, , "");
+		checkEmpty(errors, bs_bank, "bs_bank");
+		checkEmpty(errors, bs_account, "bs_account");
+		checkEmpty(errors, bs_acc_name, "bs_acc_name");
 		
 	}
 	
 	private void checkEmpty(Map<String, Boolean> errors, String value, String fieldName) {
 		if(value == null || value.isEmpty())
+			errors.put(fieldName, Boolean.TRUE);
+	}
+	private void checkEmpty(Map<String, Boolean> errors, Date value, String fieldName) {
+		if(value == null || value.toString().isEmpty())
 			errors.put(fieldName, Boolean.TRUE);
 	}
 }
