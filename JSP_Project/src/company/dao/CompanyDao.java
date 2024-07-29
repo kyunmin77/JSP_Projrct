@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import article.model.Article;
+import company.model.Company;
 import jdbc.JdbcUtil;
 import company.model.Company;
 
@@ -62,10 +62,8 @@ public class CompanyDao {
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		
 		try{
-			pstmt = conn.prepareStatement("insert into member values("
-					+ "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("insert into company values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			pstmt.setString(1, cpn.getCp_name());
 			pstmt.setString(2, cpn.getCeo_job());
 			pstmt.setString(3, cpn.getCeo_name());
@@ -85,10 +83,9 @@ public class CompanyDao {
 			pstmt.setString(17, cpn.getBs_bank());
 			pstmt.setString(18, cpn.getBs_account());
 			pstmt.setString(19, cpn.getBs_acc_name());
-			
+
 			int insertedCount = pstmt.executeUpdate();
-			// 쿼리를 실행하고 영향을 받은 레코드 수를 반환받음
-			
+			// 쿼리를 실행하고 영향을 받은 레코드 수를 반환받음	
 			if(insertedCount > 0) { // 입력이 정상적으로 수행되었다면
 				stmt = conn.createStatement();
 				rs = stmt.executeQuery("SELECT * "
@@ -102,6 +99,24 @@ public class CompanyDao {
 					// DB에 저장된 내용과 같은 Article객체를 만들어 반환
 					return new Company(
 							cp_name,
+							cpn.getCeo_job(),
+							cpn.getCeo_name(),
+							cpn.getBs_num(),
+							cpn.getBs_regnum(),
+							cpn.getFounded_date(),
+							cpn.getHp(),
+							cpn.getBs_post(),
+							cpn.getBs_addr(),
+							cpn.getBs_phone(),
+							cpn.getBs_fax(),
+							cpn.getBs_type(),
+							cpn.getCp_type(),
+							cpn.getCalc_start(),
+							cpn.getCalc_end(),
+							cpn.getPayday(),
+							cpn.getBs_bank(),
+							cpn.getBs_account(),
+							cpn.getBs_acc_name()
 							);
 				}
 			}

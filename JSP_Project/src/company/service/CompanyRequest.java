@@ -26,6 +26,32 @@ public class CompanyRequest {
 	
 	
 	
+	public CompanyRequest(String cp_name, String ceo_job, String ceo_name, String bs_num, String bs_regnum,
+			Date founded_date, String hp, String bs_post, String bs_addr, String bs_phone, String bs_fax,
+			String bs_type, String cp_type, Date calc_start, Date calc_end, Date payday, String bs_bank,
+			String bs_account, String bs_acc_name) {
+		super();
+		this.cp_name = cp_name;
+		this.ceo_job = ceo_job;
+		this.ceo_name = ceo_name;
+		this.bs_num = bs_num;
+		this.bs_regnum = bs_regnum;
+		this.founded_date = founded_date;
+		this.hp = hp;
+		this.bs_post = bs_post;
+		this.bs_addr = bs_addr;
+		this.bs_phone = bs_phone;
+		this.bs_fax = bs_fax;
+		this.bs_type = bs_type;
+		this.cp_type = cp_type;
+		this.calc_start = calc_start;
+		this.calc_end = calc_end;
+		this.payday = payday;
+		this.bs_bank = bs_bank;
+		this.bs_account = bs_account;
+		this.bs_acc_name = bs_acc_name;
+	}
+
 	public String getCp_name() {
 		return cp_name;
 	}
@@ -185,22 +211,9 @@ public class CompanyRequest {
 		checkEmpty(errors, ceo_job, "ceo_job");
 		checkEmpty(errors, ceo_name, "ceo_name");
 		checkEmpty(errors, bs_num, "bs_num");
-		checkEmpty(errors, bs_regnum, "bs_regnum");
-		checkEmpty(errors, founded_date, "founded_date");
-		checkEmpty(errors, hp, "hp");
 		checkEmpty(errors, bs_post, "bs_post");
 		checkEmpty(errors, bs_addr, "bs_addr");
 		checkEmpty(errors, bs_phone, "bs_phone");
-		checkEmpty(errors, bs_fax, "bs_fax");
-		checkEmpty(errors, bs_type, "bs_type");
-		checkEmpty(errors, cp_type, "cp_type");
-		checkEmpty(errors, calc_start, "calc_start");
-		checkEmpty(errors, calc_end, "calc_end");
-		checkEmpty(errors, payday, "payday");
-		checkEmpty(errors, bs_bank, "bs_bank");
-		checkEmpty(errors, bs_account, "bs_account");
-		checkEmpty(errors, bs_acc_name, "bs_acc_name");
-		
 	}
 	
 	private void checkEmpty(Map<String, Boolean> errors, String value, String fieldName) {

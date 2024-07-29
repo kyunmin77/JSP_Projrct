@@ -25,7 +25,7 @@
 			</tr>
 			<tr >
 				<td align='center'>
-					<%@ include file="Site_main.jsp" %>
+					
 				</td>
 			</tr>
 			
