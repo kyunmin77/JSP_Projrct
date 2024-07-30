@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import personnel.model.Employee;
 import jdbc.JdbcUtil;
+import personnel.model.Employee;
 
 public class EmployeeDao {
 	
@@ -82,7 +82,108 @@ public class EmployeeDao {
 		}
 	}
 	
+	 public Employee selectByNo(Connection conn, String no) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from employee where emp_no=?");
+	         pstmt.setString(1, no);
+	         rs = pstmt.executeQuery();
+	         Employee employee = null;
+	         if(rs.next()) {
+	        	 employee = convertEmployee(rs);
+	         }
+	         return employee;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	// 직원 정보의 수를 반환하는 메소드
+    public int selectCount(Connection conn) throws SQLException {
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT COUNT(*) FROM employee");
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } finally {
+            JdbcUtil.close(rs);
+            JdbcUtil.close(stmt);
+        }
+    }
+
+    // 직원 정보를 페이지네이션하여 반환하는 메소드
+    public List<Employee> select(Connection conn, int firstRow, int endRow) throws SQLException {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = conn.prepareStatement(
+                "SELECT * FROM (SELECT ROWNUM AS rnum, e.* FROM (SELECT * FROM employee ORDER BY emp_no DESC) e WHERE ROWNUM <= ?) WHERE rnum >= ?"
+            );
+            pstmt.setInt(1, endRow);
+            pstmt.setInt(2, firstRow);
+            rs = pstmt.executeQuery();
+            List<Employee> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(convertEmployee(rs));
+            }
+            return result;
+        } finally {
+            JdbcUtil.close(rs);
+            JdbcUtil.close(pstmt);
+        }
+    }
+
+    // 모든 직원 정보를 반환하는 메소드
+    public List<Employee> selectAll(Connection conn) throws SQLException {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = conn.prepareStatement("SELECT * FROM employee");
+            rs = pstmt.executeQuery();
+            List<Employee> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(convertEmployee(rs));
+            }
+            return result;
+        } finally {
+            JdbcUtil.close(rs);
+            JdbcUtil.close(pstmt);
+        }
+    }
+    
+    private Employee convertEmployee(ResultSet rs) throws SQLException {
+		return new Employee(
+                rs.getInt("emp_no"),
+                rs.getString("emp_type"),
+                rs.getString("name_kor"),
+                rs.getString("name_eng"),
+                rs.getDate("hired_date"),
+                rs.getDate("retired_date"),
+                rs.getString("dept"),
+                rs.getString("job"),
+                rs.getString("state"),
+                rs.getString("nationality"),
+                rs.getString("id_number"),
+                rs.getString("post_code"),
+                rs.getString("addr"),
+                rs.getString("home_number"),
+                rs.getString("phone"),
+                rs.getString("email"),
+                rs.getString("sns"),
+                rs.getString("note"),
+                rs.getString("bank"),
+                rs.getString("account")
+                );
 	}
 }
