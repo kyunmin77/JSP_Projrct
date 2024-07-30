@@ -54,7 +54,7 @@ public class IssuingDao {
 	      PreparedStatement pstmt = null;
 	      ResultSet rs = null;
 	      try {
-	         pstmt=conn.prepareStatement("select*from issuing where emp_no=?");
+	         pstmt=conn.prepareStatement("select*from issuing where isu_num=?");
 	         pstmt.setString(1, num);
 	         rs = pstmt.executeQuery();
 	         Issuing issuing = null;

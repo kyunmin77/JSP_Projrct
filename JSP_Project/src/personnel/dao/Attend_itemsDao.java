@@ -58,7 +58,7 @@ public class Attend_itemsDao {
 	      PreparedStatement pstmt = null;
 	      ResultSet rs = null;
 	      try {
-	         pstmt=conn.prepareStatement("select*from attend_items where emp_no=?");
+	         pstmt=conn.prepareStatement("select*from attend_items where att_name=?");
 	         pstmt.setString(1, name);
 	         rs = pstmt.executeQuery();
 	         Attend_items attend_items = null;

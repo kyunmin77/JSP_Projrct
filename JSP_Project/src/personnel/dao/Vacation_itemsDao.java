@@ -55,7 +55,7 @@ public class Vacation_itemsDao {
 	      PreparedStatement pstmt = null;
 	      ResultSet rs = null;
 	      try {
-	         pstmt=conn.prepareStatement("select*from vacation_items where emp_no=?");
+	         pstmt=conn.prepareStatement("select*from vacation_items where vac_name=?");
 	         pstmt.setString(1, name);
 	         rs = pstmt.executeQuery();
 	         Vacation_items vacation_items = null;
