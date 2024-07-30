@@ -12,22 +12,24 @@ import company.dao.CompanyDao;
 public class InsertCompanyService {
 	private CompanyDao companyDao = new CompanyDao();
 	
-	public void insert(CompanyRequest req) {
+	public Company insert(CompanyRequest req) {
 		Connection conn = null;
 		try {
 			conn = ConnectionProvider.getConnection();
 			//트랜잭션 시작
 			conn.setAutoCommit(false);
+			
 			Company company = toCompany(req);
-
 			//DB에 저장 하고 저장에 성공한 객체를 받아옴
 			Company savedCompany = companyDao.insert(conn, company);
-
 			if(savedCompany == null) {	// 저장에 실패하면 RuntimeException
 				throw new RuntimeException("fail to insert company");
 			}
+			
 			conn.commit();
 			//트랜잭션 끝
+			return savedCompany;
+			
 		}catch (SQLException e) {
 			JdbcUtil.rollback(conn);
 			throw new RuntimeException(e);

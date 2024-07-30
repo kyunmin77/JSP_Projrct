@@ -13,21 +13,21 @@ import jdbc.JdbcUtil;
 import company.model.Company;
 
 public class CompanyDao {
-	public Company selectById(Connection conn, String id)
+	public Company selectByBsNo(Connection conn, String bs_num)
 			throws SQLException{ //해당아이디를 가진 company형 객체를 반환하는 매서드
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("select * from company where cp_name = ?");
-			pstmt.setString(1, id);				// 쿼리문 만들고 ?에 값 대입
+			pstmt = conn.prepareStatement("select * from company where bs_num = ?");
+			pstmt.setString(1, bs_num);				// 쿼리문 만들고 ?에 값 대입
 			rs = pstmt.executeQuery();			// rs에 쿼리문 실행결과를 저장
 			Company company = null;
 			if(rs.next()) {
 				// rs에 저장된 정보를 이용하여 company 객체 초기화
 				company = new Company(
 						rs.getString("cp_name"),
-						rs.getString("ceo_jab"),
+						rs.getString("ceo_job"),
 						rs.getString("ceo_name"),
 						rs.getString("bs_num"),
 						rs.getString("bs_regnum"),
@@ -62,14 +62,18 @@ public class CompanyDao {
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
 		ResultSet rs = null;
+		
 		try{
-			pstmt = conn.prepareStatement("insert into company values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("insert into company values("
+					+ "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			pstmt.setString(1, cpn.getCp_name());
 			pstmt.setString(2, cpn.getCeo_job());
 			pstmt.setString(3, cpn.getCeo_name());
 			pstmt.setString(4, cpn.getBs_num());
 			pstmt.setString(5, cpn.getBs_regnum());
-			pstmt.setTimestamp(6, new Timestamp(cpn.getFounded_date().getTime()));
+			if(cpn.getFounded_date() == null)
+				pstmt.setTimestamp(6, null);
+			else pstmt.setTimestamp(6, new Timestamp(cpn.getFounded_date().getTime()));
 			pstmt.setString(7, cpn.getHp());
 			pstmt.setString(8, cpn.getBs_post());
 			pstmt.setString(9, cpn.getBs_addr());
@@ -77,15 +81,22 @@ public class CompanyDao {
 			pstmt.setString(11, cpn.getBs_fax());
 			pstmt.setString(12, cpn.getBs_type());
 			pstmt.setString(13, cpn.getCp_type());
-			pstmt.setTimestamp(14, new Timestamp(cpn.getCalc_start().getTime()));
-			pstmt.setTimestamp(15, new Timestamp(cpn.getCalc_end().getTime()));
-			pstmt.setTimestamp(16, new Timestamp(cpn.getPayday().getTime()));
+			if(cpn.getCalc_start() == null)
+				pstmt.setTimestamp(14, null);
+			else pstmt.setTimestamp(14, new Timestamp(cpn.getCalc_start().getTime()));
+			if(cpn.getCalc_end() == null)
+				pstmt.setTimestamp(15, null);
+			else pstmt.setTimestamp(15, new Timestamp(cpn.getCalc_end().getTime()));
+			if(cpn.getPayday() == null)
+				pstmt.setTimestamp(16, null);
+			else pstmt.setTimestamp(16, new Timestamp(cpn.getPayday().getTime()));
 			pstmt.setString(17, cpn.getBs_bank());
 			pstmt.setString(18, cpn.getBs_account());
 			pstmt.setString(19, cpn.getBs_acc_name());
-
+			
 			int insertedCount = pstmt.executeUpdate();
-			// 쿼리를 실행하고 영향을 받은 레코드 수를 반환받음	
+			// 쿼리를 실행하고 영향을 받은 레코드 수를 반환받음
+			
 			if(insertedCount > 0) { // 입력이 정상적으로 수행되었다면
 				stmt = conn.createStatement();
 				rs = stmt.executeQuery("SELECT * "
