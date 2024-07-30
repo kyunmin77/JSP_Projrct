@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import jdbc.JdbcUtil;
+import personnel.model.Appointment;
 import personnel.model.Family;
 import personnel.model.License;
 
@@ -68,7 +69,43 @@ public class LicenseDao {
 		}
 	}
 	
+	public License selectByNo(Connection conn, String no) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from license where emp_no=?");
+	         pstmt.setString(1, no);
+	         rs = pstmt.executeQuery();
+	         License license = null;
+	         if(rs.next()) {
+	        	 license = convertLicense(rs);
+	         }
+	         return license;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private License convertLicense(ResultSet rs) throws SQLException {
+		return new License(
+				rs.getInt("emp_no"),
+                rs.getString("lsc_name"),
+                rs.getDate("lsc_date"),
+                rs.getString("lsc_dep"),
+                rs.getString("lsc_num"),
+                rs.getString("lsc_note"),
+                rs.getString("lang_name"),
+                rs.getString("lang_test"),
+                rs.getString("lang_score"),
+                rs.getDate("lang_date"),
+                rs.getString("lang_read"),
+                rs.getString("lang_listen"),
+                rs.getString("lang_speak")
+				);
 	}
 }

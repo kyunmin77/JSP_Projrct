@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import jdbc.JdbcUtil;
+import personnel.model.Appointment;
 import personnel.model.Attend_items;
 import personnel.model.Reward;
 
@@ -53,7 +54,36 @@ public class Attend_itemsDao {
 		}
 	}
 	
+	public Attend_items selectByName(Connection conn, String name) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from attend_items where emp_no=?");
+	         pstmt.setString(1, name);
+	         rs = pstmt.executeQuery();
+	         Attend_items attend_items = null;
+	         if(rs.next()) {
+	        	 attend_items = convertAttend_items(rs);
+	         }
+	         return attend_items;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private Attend_items convertAttend_items(ResultSet rs) throws SQLException {
+		return new Attend_items(
+				rs.getString("att_name"),        
+                rs.getDate("appo_date"),
+                rs.getString("att_grp"),
+                rs.getString("att_deduction"),
+                rs.getString("att_conn"),
+                rs.getString("att_used")
+				);
 	}
 }

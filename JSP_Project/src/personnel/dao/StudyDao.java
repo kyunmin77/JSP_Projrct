@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import jdbc.JdbcUtil;
+import personnel.model.Appointment;
 import personnel.model.Reward;
 import personnel.model.Study;
 
@@ -57,7 +58,38 @@ public class StudyDao {
 		}
 	}
 	
+	 public Study selectByNo(Connection conn, String no) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from study where emp_no=?");
+	         pstmt.setString(1, no);
+	         rs = pstmt.executeQuery();
+	         Study study = null;
+	         if(rs.next()) {
+	        	 study = convertStudy(rs);
+	         }
+	         return study;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private Study convertStudy(ResultSet rs) throws SQLException {
+		return new Study(
+			rs.getInt("emp_no"),
+            rs.getString("study_type"),
+            rs.getString("study_name"),
+            rs.getString("study_start"),
+            rs.getString("study_end"),
+            rs.getString("study_dep"),
+            rs.getString("study_cost"),
+            rs.getString("study_refund")
+			);
 	}
 }

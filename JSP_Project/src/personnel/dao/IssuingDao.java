@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import jdbc.JdbcUtil;
+import personnel.model.Appointment;
 import personnel.model.Family;
 import personnel.model.Issuing;
 
@@ -49,7 +50,34 @@ public class IssuingDao {
 		}
 	}
 	
+	public Issuing selectByNum(Connection conn, String num) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from issuing where emp_no=?");
+	         pstmt.setString(1, num);
+	         rs = pstmt.executeQuery();
+	         Issuing issuing = null;
+	         if(rs.next()) {
+	        	 issuing = convertIssuing(rs);
+	         }
+	         return issuing;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private Issuing convertIssuing(ResultSet rs) throws SQLException {
+		return new Issuing(
+				rs.getInt("isu_num"),
+                rs.getString("isu_led"),
+                rs.getString("isu_pur"),
+                rs.getDate("isu_date")
+				);
 	}
 }

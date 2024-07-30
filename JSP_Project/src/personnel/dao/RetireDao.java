@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import jdbc.JdbcUtil;
+import personnel.model.Appointment;
 import personnel.model.Military;
 import personnel.model.Retire;
 
@@ -53,7 +54,36 @@ public class RetireDao {
 		}
 	}
 	
+	 public Retire selectByNo(Connection conn, String no) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from retire where emp_no=?");
+	         pstmt.setString(1, no);
+	         rs = pstmt.executeQuery();
+	         Retire retire = null;
+	         if(rs.next()) {
+	        	 retire = convertRetire(rs);
+	         }
+	         return retire;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private Retire convertRetire(ResultSet rs) throws SQLException {
+		return new Retire(
+			rs.getInt("emp_no"),
+            rs.getString("retire_type"),
+            rs.getDate("retire_date"),
+            rs.getString("retire_reason"),
+            rs.getString("retire_phone"),
+            rs.getString("retire_cost")
+			);
 	}
 }

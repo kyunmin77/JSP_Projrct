@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import jdbc.JdbcUtil;
+import personnel.model.Appointment;
 import personnel.model.Reward;
 
 public class RewardDao {
@@ -54,7 +55,37 @@ public class RewardDao {
 		}
 	}
 	
+	 public Reward selectByNo(Connection conn, String no) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from reward where emp_no=?");
+	         pstmt.setString(1, no);
+	         rs = pstmt.executeQuery();
+	         Reward reward = null;
+	         if(rs.next()) {
+	        	 reward = convertReward(rs);
+	         }
+	         return reward;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private Reward convertReward(ResultSet rs) throws SQLException {
+		return new Reward(
+			rs.getInt("emp_no"),
+            rs.getString("reward_type"),
+            rs.getString("reward_name"),
+            rs.getString("reward_who"),
+            rs.getDate("reward_date"),
+            rs.getString("reward_detail"),
+            rs.getString("reward_note")
+			);
 	}
 }

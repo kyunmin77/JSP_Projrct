@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import jdbc.JdbcUtil;
+import personnel.model.Appointment;
 import personnel.model.Career;
 import personnel.model.Education;
 
@@ -55,7 +56,37 @@ public class EducationDao {
 		}
 	}
 	
+	public Education selectByNo(Connection conn, String no) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from education where emp_no=?");
+	         pstmt.setString(1, no);
+	         rs = pstmt.executeQuery();
+	         Education education = null;
+	         if(rs.next()) {
+	        	 education = convertEducation(rs);
+	         }
+	         return education;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private Education convertEducation(ResultSet rs) throws SQLException {
+		return new Education(
+				rs.getInt("emp_no"),
+                rs.getString("school"),
+                rs.getString("school_start"),
+                rs.getString("school_end"),
+                rs.getString("school_name"),
+                rs.getString("school_major"),
+                rs.getString("school_state")
+				);
 	}
 }

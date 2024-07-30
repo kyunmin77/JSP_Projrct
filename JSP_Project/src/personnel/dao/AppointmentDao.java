@@ -19,7 +19,7 @@ public class AppointmentDao {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("insert into employee values(?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("insert into appointment values(?,?,?,?,?,?,?)");
 			pstmt.setInt(1, apm.getEmp_no());
 			pstmt.setString(2, apm.getAppo_type());
 			pstmt.setTimestamp(3, toTimestamp(apm.getAppo_date()));
@@ -55,7 +55,37 @@ public class AppointmentDao {
 		}
 	}
 	
+	 public Appointment selectByNo(Connection conn, String no) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from appointment where emp_no=?");
+	         pstmt.setString(1, no);
+	         rs = pstmt.executeQuery();
+	         Appointment appointment = null;
+	         if(rs.next()) {
+	        	 appointment = convertAppointment(rs);
+	         }
+	         return appointment;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private Appointment convertAppointment(ResultSet rs) throws SQLException {
+		return new Appointment(
+				rs.getInt("emp_no"),
+                rs.getString("appo_type"),
+                rs.getDate("appo_date"),
+                rs.getString("appo_dep"),
+                rs.getString("appo_job"),
+                rs.getString("appo_task"),
+                rs.getString("appo_note")
+				);
 	}
 }

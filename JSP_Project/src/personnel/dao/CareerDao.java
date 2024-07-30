@@ -10,6 +10,7 @@ import java.util.Date;
 
 import jdbc.JdbcUtil;
 import personnel.model.Appointment;
+import personnel.model.Attend_items;
 import personnel.model.Career;
 import personnel.model.Employee;
 
@@ -59,7 +60,38 @@ public class CareerDao {
 		}
 	}
 	
+	public Career selectByNo(Connection conn, String no) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from career where emp_no=?");
+	         pstmt.setString(1, no);
+	         rs = pstmt.executeQuery();
+	         Career career = null;
+	         if(rs.next()) {
+	        	 career = convertCareer(rs);
+	         }
+	         return career;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private Career convertCareer(ResultSet rs) throws SQLException {
+		return new Career(
+				rs.getInt("emp_no"),
+                rs.getString("firm"),
+                rs.getString("firm_start"),
+                rs.getString("firm_end"),
+                rs.getString("firm_term"),
+                rs.getString("firm_job"),
+                rs.getString("firm_task"),
+                rs.getString("firm_retire")
+				);
 	}
 }

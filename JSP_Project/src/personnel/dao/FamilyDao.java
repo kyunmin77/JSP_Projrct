@@ -9,7 +9,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import jdbc.JdbcUtil;
+import personnel.model.Appointment;
 import personnel.model.Career;
+import personnel.model.Education;
 import personnel.model.Family;
 
 public class FamilyDao {
@@ -63,7 +65,41 @@ public class FamilyDao {
 		}
 	}
 	
+	 public Family selectByNo(Connection conn, String no) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from family where emp_no=?");
+	         pstmt.setString(1, no);
+	         rs = pstmt.executeQuery();
+	         Family family = null;
+	         if(rs.next()) {
+	        	 family = convertFamily(rs);
+	         }
+	         return family;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private Family convertFamily(ResultSet rs) throws SQLException {
+		return new Family(
+				rs.getInt("emp_no"),
+                rs.getString("f_relation"),
+                rs.getString("f_name"),
+                rs.getString("f_nationality"),
+                rs.getString("f_id_num"),
+                rs.getString("f_disability"),
+                rs.getString("f_per_deduction"),
+                rs.getString("f_heal_insur"),
+                rs.getString("f_live"),
+                rs.getString("f_gapgeunse"),
+                rs.getString("f_child")
+				);
 	}
 }

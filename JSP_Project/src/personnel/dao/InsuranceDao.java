@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import jdbc.JdbcUtil;
+import personnel.model.Appointment;
 import personnel.model.Employee;
 import personnel.model.Insurance;
 
@@ -102,7 +103,60 @@ public class InsuranceDao {
 		}
 	}
 	
+	public Insurance selectByNo(Connection conn, String no) throws SQLException {
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         pstmt=conn.prepareStatement("select*from insurance where emp_no=?");
+	         pstmt.setString(1, no);
+	         rs = pstmt.executeQuery();
+	         Insurance insurance = null;
+	         if(rs.next()) {
+	        	 insurance = convertInsurance(rs);
+	         }
+	         return insurance;
+	      } finally {
+	         JdbcUtil.close(rs);
+	         JdbcUtil.close(pstmt);
+	      }
+	   }
+	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
+	}
+	
+	private Insurance convertInsurance(ResultSet rs) throws SQLException {
+		return new Insurance(
+				rs.getInt("emp_no"),
+                rs.getString("pension"),
+                rs.getString("insur_heal"),
+                rs.getString("insur_heal_per"),
+                rs.getString("insur_care"),
+                rs.getString("insure_care_per"),
+                rs.getString("insur_hire"),
+                rs.getString("gapgeunse"),
+                rs.getString("wage_earner_per"),
+                rs.getString("youth_red"),
+                rs.getString("youth_red_per"),
+                rs.getString("durunuri"),
+                rs.getString("salary"),
+                rs.getString("pension_month"),
+                rs.getString("heal_month"),
+                rs.getString("hire_month"),
+                rs.getString("salary_bank"),
+                rs.getString("salary_account"),
+                rs.getString("pension_num"),
+                rs.getString("pension_start"),
+                rs.getString("pension_end"),
+                rs.getString("heal_num"),
+                rs.getString("heal_start"),
+                rs.getString("heal_end"),
+                rs.getString("hire_num"),
+                rs.getString("hire_start"),
+                rs.getString("hire_end"),
+                rs.getString("indus_num"),
+                rs.getString("indus_start"),
+                rs.getString("indus_end")
+				);
 	}
 }
