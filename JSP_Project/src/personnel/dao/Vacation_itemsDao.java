@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jdbc.JdbcUtil;
 import personnel.model.Appointment;
@@ -68,6 +70,23 @@ public class Vacation_itemsDao {
 	         JdbcUtil.close(pstmt);
 	      }
 	   }
+	 
+	 public List<Vacation_items> selectAll(Connection conn) throws SQLException {
+	        PreparedStatement pstmt = null;
+	        ResultSet rs = null;
+	        try {
+	            pstmt = conn.prepareStatement("SELECT * FROM vacation_items");
+	            rs = pstmt.executeQuery();
+	            List<Vacation_items> result = new ArrayList<>();
+	            while (rs.next()) {
+	                result.add(convertVacation_items(rs));
+	            }
+	            return result;
+	        } finally {
+	            JdbcUtil.close(rs);
+	            JdbcUtil.close(pstmt);
+	        }
+	    }
 	
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
