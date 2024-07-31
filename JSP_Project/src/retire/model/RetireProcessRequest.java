@@ -194,6 +194,17 @@ public class RetireProcessRequest {
 	}
 
 
+
+	@Override
+	public String toString() {
+		return "RetireProcessRequest [state=" + state + ", emp_no=" + emp_no + ", name_kor=" + name_kor + ", dept="
+				+ dept + ", job=" + job + ", hired_date=" + hired_date + ", retired_date=" + retired_date
+				+ ", years_service=" + years_service + ", retire_type=" + retire_type + ", retire_date=" + retire_date
+				+ ", retire_reason=" + retire_reason + ", retire_phone=" + retire_phone + ", ret_calc_type_mid="
+				+ ret_calc_type_mid + ", ret_calc_type_retire=" + ret_calc_type_retire + "]";
+	}
+
+
 	
 
 	

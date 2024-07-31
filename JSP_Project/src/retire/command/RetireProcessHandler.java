@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import mvc.command.CommandHandler;
 import retire.model.OneMemberRetireRequest;
 import retire.model.RetireProcessRequest;
+import retire.model.SearchingRequest;
 import retire.service.EmpRetireService;
 
 public class RetireProcessHandler implements CommandHandler {
@@ -29,12 +30,43 @@ public class RetireProcessHandler implements CommandHandler {
 	}
 
 	private String processForm(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		List<RetireProcessRequest> list = empRetireService.selectAll();
-		req.setAttribute("list", list);
+
+		List<RetireProcessRequest> list = null;
 		
 		
+		System.out.println(!"null".equals(req.getParameter("button"))||!(req.getParameter("button")==null));
+		
+		 
+		if(!"null".equals(req.getParameter("button"))&&!(req.getParameter("button")==null)){
+			System.out.println("검색 구현");
+			
+			String button = req.getParameter("button");
+			System.out.println(button);
+			String searchCategori = req.getParameter("searchCategori");
+			System.out.println(searchCategori);
+			String searchWord = req.getParameter("searchWord");
+			System.out.println(searchWord);
+			
+			if(button.equals("all")) {
+				list = empRetireService.selectAll();
+				req.setAttribute("list", list);
+			} else {
+				
+				SearchingRequest searchReq = new SearchingRequest(searchCategori, searchWord);
+				list = empRetireService.selectSearch(searchReq);
+				req.setAttribute("list", list);
+			}
+			
+		} else {
+			
+			list = empRetireService.selectAll();
+			req.setAttribute("list", list);
+		}
+		
+				
 		req.getRequestDispatcher("/WEB-INF/view/retire/retireProcess.jsp").forward(req, res);
 		return null;
+
 	}
 
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
@@ -53,28 +85,28 @@ public class RetireProcessHandler implements CommandHandler {
 				retire_reason, retire_phone);
 
 		String modalButton = req.getParameter("modalButton");
-		
-		if(modalButton.equals("저장")) {
+
+		if (modalButton.equals("저장")) {
 			empRetireService.oneMemberRetireInsert(omrr);
-						
+
 			List<RetireProcessRequest> list = empRetireService.selectAll();
 			req.setAttribute("list", list);
-			
+
 			req.getRequestDispatcher("/WEB-INF/view/retire/retireProcess.jsp").forward(req, res);
-			
+
 			return null;
-			
+
 		} else {
-			
+
 			empRetireService.oneMemberRetireDelete(omrr);
 			List<RetireProcessRequest> list = empRetireService.selectAll();
 			req.setAttribute("list", list);
-			
+
 			req.getRequestDispatcher("/WEB-INF/view/retire/retireProcess.jsp").forward(req, res);
-			
+
 			return null;
-			
+
 		}
-		
+
 	}
 }

@@ -55,17 +55,17 @@
 		</tr>
 		<tr>
 			<td>
-				<form action="" method="post">
+				<form action="${pageContext.request.contextPath}/retireProcess.do" method="get">
 					<table width='100%'>
 						<tr>
 							<td>
-								<select>
+								<select name="searchCategori">
 									<option value="name_kor" selected>名前</option>
 									<option value="emp_no">社員番号</option>
 									<option value="dept">部署</option>
 									<option value="all">전체</option>
 								</select>
-								<input type="text" placeholder="検索語を入力してください。" name="search">
+								<input type="text" placeholder="検索語を入力してください。" name="searchWord">
 								<input type="submit" name="button" value="検索">
 								<input type="submit" name="button" value="전체보기">
 								<span style="float: right;">
