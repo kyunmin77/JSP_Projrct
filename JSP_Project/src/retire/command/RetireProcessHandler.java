@@ -1,24 +1,80 @@
 package retire.command;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mvc.command.CommandHandler;
-import retire.model.RetireMemberRequest;
+import retire.model.OneMemberRetireRequest;
+import retire.model.RetireProcessRequest;
 import retire.service.EmpRetireService;
 
-public class RetireProcessHandler implements CommandHandler{
+public class RetireProcessHandler implements CommandHandler {
+
+	private EmpRetireService empRetireService = new EmpRetireService();
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
-		
-		EmpRetireService empRetireService = new EmpRetireService();
-		List<RetireMemberRequest> list =  empRetireService.selectAll();
-		req.setAttribute("list", list);
-		req.getRequestDispatcher("/WEB-INF/view/retire/retireProcess.jsp").forward(req, res);
-	    return null;
+		if (req.getMethod().equalsIgnoreCase("GET")) {
+			return processForm(req, res);
+		} else if (req.getMethod().equalsIgnoreCase("POST")) {
+			return processSubmit(req, res);
+		} else {
+			res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+			return null;
+		}
 	}
 
+	private String processForm(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		List<RetireProcessRequest> list = empRetireService.selectAll();
+		req.setAttribute("list", list);
+		
+		
+		req.getRequestDispatcher("/WEB-INF/view/retire/retireProcess.jsp").forward(req, res);
+		return null;
+	}
+
+	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
+
+		int emp_no = Integer.parseInt(req.getParameter("emp_no"));
+		String retirement_type = req.getParameter("retirement_type");
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = req.getParameter("retirement_date");
+		Date retirement_date = dateFormat.parse(dateString);
+
+		String retire_reason = req.getParameter("retire_reason");
+		String retire_phone = req.getParameter("retire_phone");
+
+		OneMemberRetireRequest omrr = new OneMemberRetireRequest(emp_no, retirement_type, retirement_date,
+				retire_reason, retire_phone);
+
+		String modalButton = req.getParameter("modalButton");
+		
+		if(modalButton.equals("저장")) {
+			empRetireService.oneMemberRetireInsert(omrr);
+						
+			List<RetireProcessRequest> list = empRetireService.selectAll();
+			req.setAttribute("list", list);
+			
+			req.getRequestDispatcher("/WEB-INF/view/retire/retireProcess.jsp").forward(req, res);
+			
+			return null;
+			
+		} else {
+			
+			empRetireService.oneMemberRetireDelete(omrr);
+			List<RetireProcessRequest> list = empRetireService.selectAll();
+			req.setAttribute("list", list);
+			
+			req.getRequestDispatcher("/WEB-INF/view/retire/retireProcess.jsp").forward(req, res);
+			
+			return null;
+			
+		}
+		
+	}
 }

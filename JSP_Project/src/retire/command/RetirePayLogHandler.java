@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import mvc.command.CommandHandler;
 
-public class RetirementMntHandler implements CommandHandler {
+public class RetirePayLogHandler implements CommandHandler {
 
-	private static final String FORM_VIEW = "/WEB-INF/view/retire/retirementMnt.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/retire/retirePayLog.jsp";
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
