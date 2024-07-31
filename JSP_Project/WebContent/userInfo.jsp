@@ -10,6 +10,14 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 		<title>급여관리</title>
+		
+		<script>
+	        function successJoin() {
+	            alert('사용자 정보가 저장되었습니다.');
+	            }
+	            
+	    </script>
+		
 	</head>
 	<body>
 		<table width='100%' border='0'>
@@ -25,7 +33,7 @@
 			</tr>
 			<tr >
 				<td align='center'>
-					<form action="company.do" method='post'>
+					<form action="company.do" method='post' onSubmit='successJoin()'>
 					<h3>회사정보</h3>
 					<table width='80%' border='1'>
 					<tr>
@@ -39,7 +47,7 @@
 						<td>법인등록번호:</td><td><input type='text' name='bs_regnum' value='${company.bs_regnum }'></td>
 					</tr>
 					<tr>
-						<td>설립일:</td><td><input type='text' name='founded_date'value='${param.founded_date }'></td>
+						<td>설립일:</td><td><input type='text' name='founded_date'value='${company.founded_date }'></td>
 						<td>홈페이지:</td><td><input type='text' name='hp' value='${company.hp }'></td>
 					</tr>
 					<tr>
@@ -60,9 +68,9 @@
 					<h3>급여지급정보</h3>
 					<table width='80%' border='1'>
 					<tr>
-						<td>급여산정기간:</td><td><input type='text' name='calc_start' value='${param.calc_start }'>
-					 ~ <input type='text' name='calc_end' value='${param.calc_end }'></td>
-						<td>급여지급일:</td><td><input type='text' name='payday' value='${param.payday }'></td>
+						<td>급여산정기간:</td><td><input type='text' name='calc_start' value='${company.calc_start }'>
+					 ~ <input type='text' name='calc_end' value='${company.calc_end }'></td>
+						<td>급여지급일:</td><td><input type='text' name='payday' value='${company.payday }'></td>
 					</tr>
 					<tr>
 						<td>금융기관:</td><td><input type='text' name='bs_bank' value='${company.bs_bank }'></td>
