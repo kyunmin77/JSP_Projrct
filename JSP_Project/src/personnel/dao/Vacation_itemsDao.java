@@ -11,9 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import jdbc.JdbcUtil;
-import personnel.model.Appointment;
-import personnel.model.Attend_items;
-import personnel.model.Reward;
 import personnel.model.Vacation_items;
 
 public class Vacation_itemsDao {
@@ -53,24 +50,6 @@ public class Vacation_itemsDao {
 		}
 	}
 	
-	 public Vacation_items selectByName(Connection conn, String name) throws SQLException {
-	      PreparedStatement pstmt = null;
-	      ResultSet rs = null;
-	      try {
-	         pstmt=conn.prepareStatement("select*from vacation_items where vac_name=?");
-	         pstmt.setString(1, name);
-	         rs = pstmt.executeQuery();
-	         Vacation_items vacation_items = null;
-	         if(rs.next()) {
-	        	 vacation_items = convertVacation_items(rs);
-	         }
-	         return vacation_items;
-	      } finally {
-	         JdbcUtil.close(rs);
-	         JdbcUtil.close(pstmt);
-	      }
-	   }
-	 
 	 public List<Vacation_items> selectAll(Connection conn) throws SQLException {
 	        PreparedStatement pstmt = null;
 	        ResultSet rs = null;
@@ -98,6 +77,6 @@ public class Vacation_itemsDao {
             rs.getDate("vac_start"),
             rs.getDate("vac_end"),
             rs.getString("vac_used")
-				);
-	}
+			);
+	}	
 }
