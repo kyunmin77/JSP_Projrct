@@ -57,7 +57,7 @@
 	<ul>
 		<li><a href="#">基本環境設定</a>
 			<ul>
-				<li><a href="company.do">ユーザー情報</a></li>
+				<li><a href="userInfo.jsp">ユーザー情報</a></li>
 				<li><a href="#">社員登録</a></li>
 				<li><a href="#">休暇・勤怠設定</a></li>
 				<li><a href="#">給与項目設定</a></li>

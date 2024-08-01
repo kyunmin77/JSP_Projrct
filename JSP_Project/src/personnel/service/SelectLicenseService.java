@@ -2,9 +2,11 @@ package personnel.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import jdbc.connection.ConnectionProvider;
 import personnel.dao.LicenseDao;
+import personnel.model.Career;
 import personnel.model.License;
 
 public class SelectLicenseService {
@@ -22,4 +24,14 @@ public class SelectLicenseService {
 		}
 	}
 	
+	public List<License> selectAll() {
+		try(Connection conn = ConnectionProvider.getConnection()) {
+		
+			List<License> result = licenseDao.selectAll(conn);			
+			return result;
+			
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

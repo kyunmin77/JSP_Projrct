@@ -92,10 +92,6 @@ public class Attend_itemsDao {
         }
     }
 	
-	private Timestamp toTimestamp(Date date) {
-		return new Timestamp(date.getTime());
-	}
-	
 	private Attend_items convertAttend_items(ResultSet rs) throws SQLException {
 		return new Attend_items(
 				rs.getString("att_name"),        

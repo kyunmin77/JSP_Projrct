@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Date;
 
 import jdbc.JdbcUtil;
 import personnel.model.Appointment;
 import personnel.model.Employee;
+import personnel.model.Reward;
 
 public class AppointmentDao {
 	
@@ -72,6 +75,23 @@ public class AppointmentDao {
 	         JdbcUtil.close(pstmt);
 	      }
 	   }
+	 
+	 public List<Appointment> selectAll(Connection conn) throws SQLException {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				pstmt = conn.prepareStatement("SELECT * FROM Appointment");
+				rs = pstmt.executeQuery();
+				List<Appointment> result = new ArrayList<>();
+				while (rs.next()) {
+					result.add(convertAppointment(rs));
+				}
+				return result;
+			} finally {
+				JdbcUtil.close(rs);
+				JdbcUtil.close(pstmt);
+			}
+		}
 	
 	private Appointment convertAppointment(ResultSet rs) throws SQLException {
 		return new Appointment(

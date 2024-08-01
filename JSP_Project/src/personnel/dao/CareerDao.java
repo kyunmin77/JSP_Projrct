@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import attvac_items.model.Attend_items;
 
@@ -14,6 +16,7 @@ import java.sql.Date;
 import jdbc.JdbcUtil;
 import personnel.model.Appointment;
 import personnel.model.Career;
+import personnel.model.Education;
 import personnel.model.Employee;
 
 public class CareerDao {
@@ -80,8 +83,21 @@ public class CareerDao {
 	      }
 	   }
 	
-	private Timestamp toTimestamp(Date date) {
-		return new Timestamp(date.getTime());
+	public List<Career> selectAll(Connection conn) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM Career");
+			rs = pstmt.executeQuery();
+			List<Career> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertCareer(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
 	}
 	
 	private Career convertCareer(ResultSet rs) throws SQLException {

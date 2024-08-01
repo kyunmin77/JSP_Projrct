@@ -6,12 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Date;
 
 import jdbc.JdbcUtil;
 import personnel.model.Appointment;
 import personnel.model.Career;
 import personnel.model.Education;
+import personnel.model.Family;
 
 public class EducationDao {
 	
@@ -74,8 +77,21 @@ public class EducationDao {
 	      }
 	   }
 	
-	private Timestamp toTimestamp(Date date) {
-		return new Timestamp(date.getTime());
+	public List<Education> selectAll(Connection conn) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM Education");
+			rs = pstmt.executeQuery();
+			List<Education> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertEducation(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
 	}
 	
 	private Education convertEducation(ResultSet rs) throws SQLException {

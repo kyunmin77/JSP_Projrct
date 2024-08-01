@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import jdbc.JdbcUtil;
 import personnel.model.Language;
+import personnel.model.License;
 
 public class LanguageDao {
 	public Language insert(Connection conn, Language lng) throws SQLException{
@@ -71,6 +74,23 @@ public class LanguageDao {
 	         JdbcUtil.close(pstmt);
 	      }
 	   }
+	
+	public List<Language> selectAll(Connection conn) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM Language");
+			rs = pstmt.executeQuery();
+			List<Language> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertLanguage(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
 
 	private Language convertLanguage(ResultSet rs) throws SQLException {
 		return new Language(

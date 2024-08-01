@@ -26,7 +26,7 @@
 			<tr>
 				<td align='center'>
 				
-				<form action = "Register.do" method="post">
+				<form action = "register.do" method="post">
 					<p>
 						사원번호 : <br/><input type="text" name="emp_no" value="${newEmployeeNo}">
 					</p>

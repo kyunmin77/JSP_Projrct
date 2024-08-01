@@ -6,10 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Date;
 
 import jdbc.JdbcUtil;
 import personnel.model.Appointment;
+import personnel.model.Career;
 import personnel.model.Family;
 import personnel.model.License;
 
@@ -72,6 +75,23 @@ public class LicenseDao {
 	         JdbcUtil.close(pstmt);
 	      }
 	   }
+	
+	public List<License> selectAll(Connection conn) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM License");
+			rs = pstmt.executeQuery();
+			List<License> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(convertLicense(rs));
+			}
+			return result;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
 	
 	private License convertLicense(ResultSet rs) throws SQLException {
 		return new License(

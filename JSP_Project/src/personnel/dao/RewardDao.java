@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Date;
 
 import jdbc.JdbcUtil;
 import personnel.model.Appointment;
 import personnel.model.Reward;
+import personnel.model.Study;
 
 public class RewardDao {
 	
@@ -73,9 +76,22 @@ public class RewardDao {
 	      }
 	   }
 	
-	private Timestamp toTimestamp(Date date) {
-		return new Timestamp(date.getTime());
-	}
+	 public List<Reward> selectAll(Connection conn) throws SQLException {
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				pstmt = conn.prepareStatement("SELECT * FROM Reward");
+				rs = pstmt.executeQuery();
+				List<Reward> result = new ArrayList<>();
+				while (rs.next()) {
+					result.add(convertReward(rs));
+				}
+				return result;
+			} finally {
+				JdbcUtil.close(rs);
+				JdbcUtil.close(pstmt);
+			}
+		}
 	
 	private Reward convertReward(ResultSet rs) throws SQLException {
 		return new Reward(
