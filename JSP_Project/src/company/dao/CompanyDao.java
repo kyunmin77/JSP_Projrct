@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 
 import company.model.Company;
 import jdbc.JdbcUtil;
@@ -67,7 +67,7 @@ public class CompanyDao {
 			pstmt.setString(4, cpn.getBs_num());
 			pstmt.setString(5, cpn.getBs_regnum());
 			if(cpn.getFounded_date() == null)
-				pstmt.setTimestamp(6, null);
+				pstmt.setDate(6, null);
 			else pstmt.setDate(6, cpn.getFounded_date());
 			pstmt.setString(7, cpn.getHp());
 			pstmt.setString(8, cpn.getBs_post());
@@ -77,7 +77,7 @@ public class CompanyDao {
 			pstmt.setString(12, cpn.getBs_type());
 			pstmt.setString(13, cpn.getCp_type());
 			if(cpn.getCalc_start() == null)
-				pstmt.setTimestamp(14, null);
+				pstmt.setDate(14, null);
 			else pstmt.setDate(14, cpn.getCalc_start());
 			if(cpn.getCalc_end() == null)
 				pstmt.setTimestamp(15, null);

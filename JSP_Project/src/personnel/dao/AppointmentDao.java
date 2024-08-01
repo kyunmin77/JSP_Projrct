@@ -73,10 +73,6 @@ public class AppointmentDao {
 	      }
 	   }
 	
-	private Timestamp toTimestamp(Date date) {
-		return new Timestamp(date.getTime());
-	}
-	
 	private Appointment convertAppointment(ResultSet rs) throws SQLException {
 		return new Appointment(
 				rs.getInt("emp_no"),

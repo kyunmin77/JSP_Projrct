@@ -20,20 +20,13 @@ public class LicenseDao {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("insert into license values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("insert into license values(?,?,?,?,?,?)");
 			pstmt.setInt(1, lsc.getEmp_no());
 			pstmt.setString(2, lsc.getLsc_name());
 			pstmt.setDate(3, lsc.getLsc_date());
 			pstmt.setString(4, lsc.getLsc_dep());
 			pstmt.setString(5, lsc.getLsc_num());
 			pstmt.setString(6, lsc.getLsc_note());
-			pstmt.setString(7, lsc.getLang_name());
-			pstmt.setString(8, lsc.getLang_test());
-			pstmt.setString(9, lsc.getLang_score());
-			pstmt.setDate(10, lsc.getLang_date());
-			pstmt.setString(11, lsc.getLang_read());
-			pstmt.setString(12, lsc.getLang_listen());
-			pstmt.setString(13, lsc.getLang_speak());
 			
 			
 			int insertedCount = pstmt.executeUpdate();
@@ -50,14 +43,7 @@ public class LicenseDao {
 							lsc.getLsc_date(),
 							lsc.getLsc_dep(),
 							lsc.getLsc_num(),
-							lsc.getLsc_note(),
-							lsc.getLang_name(),
-							lsc.getLang_test(),
-							lsc.getLang_score(),
-							lsc.getLang_date(),
-							lsc.getLang_read(),
-							lsc.getLang_listen(),
-							lsc.getLang_speak()
+							lsc.getLsc_note()
 							);	
 				}
 			}
@@ -87,10 +73,6 @@ public class LicenseDao {
 	      }
 	   }
 	
-	private Timestamp toTimestamp(Date date) {
-		return new Timestamp(date.getTime());
-	}
-	
 	private License convertLicense(ResultSet rs) throws SQLException {
 		return new License(
 				rs.getInt("emp_no"),
@@ -98,14 +80,7 @@ public class LicenseDao {
                 rs.getDate("lsc_date"),
                 rs.getString("lsc_dep"),
                 rs.getString("lsc_num"),
-                rs.getString("lsc_note"),
-                rs.getString("lang_name"),
-                rs.getString("lang_test"),
-                rs.getString("lang_score"),
-                rs.getDate("lang_date"),
-                rs.getString("lang_read"),
-                rs.getString("lang_listen"),
-                rs.getString("lang_speak")
+                rs.getString("lsc_note")
 				);
 	}
 }

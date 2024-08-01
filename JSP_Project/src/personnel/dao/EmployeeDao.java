@@ -5,9 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import jdbc.JdbcUtil;
@@ -86,7 +85,7 @@ public class EmployeeDao {
 	      PreparedStatement pstmt = null;
 	      ResultSet rs = null;
 	      try {
-	         pstmt=conn.prepareStatement("select*from employee where emp_no=?");
+	         pstmt=conn.prepareStatement("select * from employee where emp_no=?");
 	         pstmt.setString(1, no);
 	         rs = pstmt.executeQuery();
 	         Employee employee = null;
@@ -100,11 +99,6 @@ public class EmployeeDao {
 	      }
 	   }
 
-	
-	private Timestamp toTimestamp(Date date) {
-		return new Timestamp(date.getTime());
-	}
-	
 	// 직원 정보의 수를 반환하는 메소드
     public int selectCount(Connection conn) throws SQLException {
         Statement stmt = null;

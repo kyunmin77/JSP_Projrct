@@ -1,4 +1,4 @@
-package personnel.dao;
+package attvac_items.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
+import attvac_items.model.Attend_items;
+import attvac_items.model.Vacation_items;
 import jdbc.JdbcUtil;
 import personnel.model.Appointment;
-import personnel.model.Attend_items;
 import personnel.model.Reward;
-import personnel.model.Vacation_items;
 
 public class Vacation_itemsDao {
 	

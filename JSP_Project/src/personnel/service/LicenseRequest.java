@@ -1,9 +1,8 @@
-package personnel.model;
+package personnel.service;
 
 import java.sql.Date;
 
-public class License {
-
+public class LicenseRequest {
 	private int emp_no;
 	private String lsc_name;
 	private Date lsc_date;
@@ -11,7 +10,7 @@ public class License {
 	private String lsc_num;
 	private String lsc_note;
 	
-	public License(int emp_no, String lsc_name, Date lsc_date, String lsc_dep, String lsc_num, String lsc_note) {
+	public LicenseRequest(int emp_no, String lsc_name, Date lsc_date, String lsc_dep, String lsc_num, String lsc_note) {
 		super();
 		this.emp_no = emp_no;
 		this.lsc_name = lsc_name;
@@ -69,5 +68,5 @@ public class License {
 		this.lsc_note = lsc_note;
 	}
 	
-	
+
 }

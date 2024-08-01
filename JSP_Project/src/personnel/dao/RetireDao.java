@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.sql.Date;
+import java.util.Date;
 
 import jdbc.JdbcUtil;
 import personnel.model.Appointment;
@@ -23,7 +23,7 @@ public class RetireDao {
 			pstmt = conn.prepareStatement("insert into retire values(?,?,?,?,?,?)");
 			pstmt.setInt(1, ret.getEmp_no());
 			pstmt.setString(2, ret.getRetire_type());
-			pstmt.setDate(3, ret.getRetire_date());
+			pstmt.setTimestamp(3, toTimestamp(ret.getRetire_date()));
 			pstmt.setString(4, ret.getRetire_reason());
 			pstmt.setString(5, ret.getRetire_phone());
 			pstmt.setString(6, ret.getRetire_cost());

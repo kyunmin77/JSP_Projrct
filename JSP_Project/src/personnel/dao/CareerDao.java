@@ -6,11 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+
+import attvac_items.model.Attend_items;
+
 import java.sql.Date;
 
 import jdbc.JdbcUtil;
 import personnel.model.Appointment;
-import personnel.model.Attend_items;
 import personnel.model.Career;
 import personnel.model.Employee;
 
