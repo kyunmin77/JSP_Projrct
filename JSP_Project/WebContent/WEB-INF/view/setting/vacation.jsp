@@ -11,7 +11,7 @@
 <head>
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 
-<title>급여관리</title>
+<title>급여관리 </title>
 
 <script>
 function openModal() {
