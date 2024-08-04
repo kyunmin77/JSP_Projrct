@@ -11,7 +11,7 @@ import retire.model.OneMemberRetireRequest;
 import retire.model.RetireProcessRequest;
 import retire.model.SearchingRequest;
 
-public class EmpRetireService {
+public class RetireService {
 
 	private Connection conn = null;
 	private RetireDao retireDao = new RetireDao();

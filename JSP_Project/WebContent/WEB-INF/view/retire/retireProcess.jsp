@@ -1,5 +1,3 @@
-<!-- 모달 두 개 다 잘 뜨는 코드 -->
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page info="Include 테스트"%>
@@ -94,7 +92,7 @@
 										<td align="center"><strong>퇴직정산</strong></td>
 									</tr>
 									<c:forEach var="n" items="${list}" begin="0" end="13" varStatus="st">
-										<tr class="btn-open-modal" data-state="${n.state}" data-emp_no="${n.emp_no}" data-name="${n.name_kor}" data-dept="${n.dept}" data-job="${n.job}" data-hired_date="${n.hired_date}" data-retired_date="${n.retired_date}" data-years_service="${n.years_service}" data-ret_calc_type_mid="${n.ret_calc_type_mid}" data-ret_calc_type_retire="${n.ret_calc_type_retire}" data-retire_type="${n.retire_type}" data-retire_date="${n.retire_date}" data-retire_reason="${n.retire_reason}" data-retire_phone="${n.retire_phone}">
+										<tr class="btn-open-modal" data-state="${n.state}" data-emp_no="${n.emp_no}" data-name="${n.name_kor}" data-dept="${n.dept}" data-job="${n.job}" data-hired_date="${n.hired_date}"  data-years_service="${n.years_service}" data-ret_calc_type_mid="${n.ret_calc_type_mid}" data-ret_calc_type_retire="${n.ret_calc_type_retire}"  data-retired_date="${n.retired_date}" data-retire_reason="${n.retire_reason}" data-retire_phone="${n.retire_phone}">
 											<td align="center">${st.index+1}</td>
 											<td align="center">
 												<c:if test="${n.state eq '재직'}">${n.state}</c:if>
@@ -251,12 +249,11 @@
                         dept: row.getAttribute('data-dept'),
                         job: row.getAttribute('data-job'),
                         hired_date: row.getAttribute('data-hired_date'),
-                        retired_date: row.getAttribute('data-retired_date'),
                         years_service: row.getAttribute('data-years_service'),
                         ret_calc_type_mid: row.getAttribute('data-ret_calc_type_mid'),
                         ret_calc_type_retire: row.getAttribute('data-ret_calc_type_retire'),
                         retire_type: row.getAttribute('data-retire_type'),
-                        retire_date: row.getAttribute('data-retire_date'),
+                        retired_date: row.getAttribute('data-retired_date'),
                         retire_reason: row.getAttribute('data-retire_reason'),
                         retire_phone: row.getAttribute('data-retire_phone')
                     };

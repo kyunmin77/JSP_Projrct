@@ -11,11 +11,11 @@ import mvc.command.CommandHandler;
 import retire.model.OneMemberRetireRequest;
 import retire.model.RetireProcessRequest;
 import retire.model.SearchingRequest;
-import retire.service.EmpRetireService;
+import retire.service.RetireService;
 
 public class RetireProcessHandler implements CommandHandler {
 
-	private EmpRetireService empRetireService = new EmpRetireService();
+	private RetireService empRetireService = new RetireService();
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
@@ -32,20 +32,13 @@ public class RetireProcessHandler implements CommandHandler {
 	private String processForm(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
 		List<RetireProcessRequest> list = null;
-		
-		
-		System.out.println(!"null".equals(req.getParameter("button"))||!(req.getParameter("button")==null));
-		
+				
 		 
 		if(!"null".equals(req.getParameter("button"))&&!(req.getParameter("button")==null)){
-			System.out.println("검색 구현");
 			
 			String button = req.getParameter("button");
-			System.out.println(button);
 			String searchCategori = req.getParameter("searchCategori");
-			System.out.println(searchCategori);
 			String searchWord = req.getParameter("searchWord");
-			System.out.println(searchWord);
 			
 			if(button.equals("all")) {
 				list = empRetireService.selectAll();
