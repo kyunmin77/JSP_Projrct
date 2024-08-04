@@ -23,15 +23,13 @@
 					<%@ include file="Site_menu.jsp" %>
 				</td>
 			</tr>
-			<tr >
+			<tr>
 				<td align='center'>
-					<%@ include file="Site_main.jsp" %>
+				여기에 작성
 				</td>
 			</tr>
+
 			
 		</table>
 	</body>
 </html>
-
-
-
