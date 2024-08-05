@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/commandHandlerURI.properties=UTF-8
 encoding//WebContent/WEB-INF/view/retire/retirePay.jsp=UTF-8
+encoding//WebContent/WEB-INF/view/retire/retirePayment.jsp=UTF-8
 encoding//WebContent/WEB-INF/view/retire/retireProcess.jsp=UTF-8

@@ -241,7 +241,7 @@ public class RetirePayDao {
 		
 
 		//Date 입력 시 년도 추출하기
-		private int getYearFromDate(Connection conn, Date retired_date) throws SQLException {
+		public int getYearFromDate(Connection conn, Date retired_date) throws SQLException {
 
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;

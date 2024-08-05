@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class RetirePayRequest {
 
-	private int emp_no;
-	private String ret_calc_type_mid; //퇴직구분(중간정산)
-    private String ret_calc_type_retire; //퇴직구분(퇴직정산)
+	private int emp_no; //-
+	private String ret_calc_type_mid; //퇴직구분(중간정산)-    //parameterName 은 ret_calc_type
+    private String ret_calc_type_retire; //퇴직구분(퇴직정산)- //parameterName 은 ret_calc_type
 
 	
 	//employee 테이블
@@ -22,17 +22,17 @@ public class RetirePayRequest {
 
 	
 	//retire_payment 테이블
-	private Date ret_other_date; // 기타과세소득지급일
-	private String ret_other_name; // 기타과세소득지급항목
-	private int ret_other_cost; // 기타과세소득금액
-	private int ret_prize; // 퇴직위로금
-	private int ret_notice; // 해고예고수당
-	private int ret_tax_free_pay; // 비과세퇴직급여
-	private int ret_ad_pay; // 기납부세액
-	private int ret_tax_free; // 세액공제
+	private Date ret_other_date; // 기타과세소득지급일-
+	private String ret_other_name; // 기타과세소득지급항목-
+	private int ret_other_cost; // 기타과세소득금액-
+	private int ret_prize; // 퇴직위로금-
+	private int ret_notice; // 해고예고수당-
+	private int ret_tax_free_pay; // 비과세퇴직급여-
+	private int ret_ad_pay; // 기납부세액-
+	private int ret_tax_free; // 세액공제-
 
-	private int ret_3mon_sum; // 3개월총계
-	private int ret_day_avg; // 1일평균임금
+	private int ret_3mon_sum; // 3개월총계-
+	private int ret_day_avg; // 1일평균임금-
 	private int ret_pay; // 퇴직소득
 	private int ret_year; // 퇴직일과세연도
 	private int ret_tax; // 산출세액
