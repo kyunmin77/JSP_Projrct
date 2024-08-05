@@ -60,7 +60,6 @@ public class RetirePayService {
 			conn.setAutoCommit(false);
 
 			date = retirePayDao.retiredDateByEmpNo(conn, emp_no);
-			System.out.println(date +"서비스");
 			conn.commit();
 			return date;
 		} catch (SQLException e) {
@@ -73,12 +72,12 @@ public class RetirePayService {
 	}
 	
 
-	//퇴직일로부터 직전 3개월 날짜 가져오기
-	public DayTerm getDayTerm(Date retired_date) throws SQLException {
+	//퇴직일로부터 직전 3개월 날짜와 급여총액 가져오기
+	public DayTerm getDayTerm(int emp_no, Date retired_date) throws SQLException {
 		try {
 			conn = ConnectionProvider.getConnection();
 
-			return retirePayDao.getDayTerm(conn, retired_date);
+			return retirePayDao.getDayTerm(conn, emp_no, retired_date);
 			
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
@@ -86,7 +85,7 @@ public class RetirePayService {
 		} finally {
 			JdbcUtil.close(conn);
 		}
-		
-	
 	}
+	
+	
 }

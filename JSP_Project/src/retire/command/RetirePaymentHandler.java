@@ -35,10 +35,9 @@ public class RetirePaymentHandler implements CommandHandler {
 		req.setAttribute("rpr", rpr);
 		
 		Date date = retirePayService.retiredDateByEmpNo(emp_no);
-		DayTerm dayTerm = retirePayService.getDayTerm(date);
+		DayTerm dayTerm = retirePayService.getDayTerm(emp_no, date);
 		req.setAttribute("dayTerm", dayTerm);
 		
-		System.out.println(dayTerm);
 		
 		req.getRequestDispatcher(FORM_VIEW).forward(req, res);
 		return null;

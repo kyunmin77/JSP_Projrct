@@ -4,6 +4,8 @@
 <%@ page buffer="none"%>
 <%@ page autoFlush="true"%>
 <%@ page isThreadSafe="true"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -28,7 +30,7 @@
 			<td>
 				<form action="${pageContext.request.contextPath}/retirePayment.do"
 					method="post">
-					<table  width="100%">
+					<table width="100%">
 						<tr>
 							<td>
 								<h3>${rpr.name_kor}&nbsp;${rpr.job}퇴직계산</h3>
@@ -38,9 +40,9 @@
 									<option value="퇴직정산">퇴직정산</option>
 							</select>
 							</td>
-							<td>입사일 <input type="text" value="${rpr.hired_date}" readonly> ~ 퇴직일 <input type="text" value="${rpr.retired_date}" readonly></td>
+							<td>입사일 <input type="date" value="${rpr.hired_date}" readonly> ~ 퇴직일 <input type="date" value="${rpr.retired_date}" readonly></td>
 							<td>근속년수 ${rpr.years_service} 년</td>
-							<td>근속일수 ${rpr.days_service} 일</td>
+							<td>근속일수 <fmt:formatNumber value="${rpr.days_service}"/> 일</td>
 						</tr>
 						<tr>
 							<td colspan="3">
@@ -57,53 +59,37 @@
 									</tr>
 									<tr>
 										<td align="center">
-										<input type="text" style="width: 100px;" readonly>~<input type="text" style="width: 100px;" readonly></td>
-										<td align="center"><input type="text" style="width: 100px;" readonly></td>
-										<td align="center"><input type="text" style="width: 100px;" readonly></td>
+										<input type="date" style="width: 100px;" value="${dayTerm.prev3_first}" readonly>~<input type="date" style="width: 100px;"  value="${dayTerm.prev3_last}" readonly></td>
+										<td align="center"><input type="text" style="width: 100px;" value="${dayTerm.prev3_days}" readonly></td>
+										<td align="center"><fmt:formatNumber value="${dayTerm.prev3_sal_sum}"/> </td>
 									</tr>
 									<tr>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly>~<input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
+										<td align="center"><input type="date" style="width: 100px;" value="${dayTerm.prev2_first}" readonly>~<input type="date" style="width: 100px;" value="${dayTerm.prev2_last}" readonly></td>
+										<td align="center"><input type="text" style="width: 100px;" value="${dayTerm.prev2_days}" readonly></td>
+										<td align="center"><fmt:formatNumber value="${dayTerm.prev2_sal_sum}"/></td>
 									</tr>
 									<tr>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly>~<input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
+										<td align="center"><input type="date" style="width: 100px;" value="${dayTerm.prev1_first}"  readonly>~<input type="date" style="width: 100px;"value="${dayTerm.prev1_last}"  readonly></td>
+										<td align="center"><input type="text" style="width: 100px;" value="${dayTerm.prev1_days}" readonly></td>
+										<td align="center"><fmt:formatNumber value="${dayTerm.prev1_sal_sum}"/></td>
 									</tr>
 									<tr>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly>~<input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
+										<td align="center"><input type="date" style="width: 100px;" value="${dayTerm.this_first}" readonly>~<input type="date" style="width: 100px;" value="${dayTerm.this_last}" readonly></td>
+										<td align="center"><input type="text" style="width: 100px;" value="${dayTerm.this_days}" readonly></td>
+										<td align="center"><fmt:formatNumber value="${dayTerm.this_sal_sum}"/></td>
 									</tr>
 									<tr>
 										<td align="center" bgcolor="skyblue">총 합계</td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
+										<td align="center"><input type="text" style="width: 100px;" value = "${dayTerm.prev3_days+dayTerm.prev2_days+dayTerm.prev1_days+dayTerm.this_days}" readonly></td>
+										<td align="center"><fmt:formatNumber value="${dayTerm.prev3_sal_sum+dayTerm.prev2_sal_sum+dayTerm.prev1_sal_sum+dayTerm.this_sal_sum}"/></td>
 									</tr>
 									<tr>
 										<td align="center" colspan="1" bgcolor="skyblue">퇴직위로금</td>
 										<td align="center" colspan="2" bgcolor="skyblue">해고예고수당</td>
 									</tr>
 									<tr>
-										<td align="center" colspan="1"><input type="text"
-											style="width: 100px;"></td>
-										<td align="center" colspan="2"><input type="text"
-											style="width: 100px;"></td>
+										<td align="center" colspan="1"><input type="text" style="width: 100px;"></td>
+										<td align="center" colspan="2"><input type="text" style="width: 100px;"></td>
 									</tr>
 								</table>
 							</td>
@@ -121,59 +107,34 @@
 										<td align="center" bgcolor="skyblue">3개월분</td>
 									</tr>
 									<tr>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly>~<input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
+										<td align="center"><input type="date" style="width: 100px;">~<input type="date" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;" readonly></td>
 									</tr>
 									<tr>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly>~<input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
+										<td align="center"><input type="date" style="width: 100px;">~<input type="date" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;" readonly></td>
 									</tr>
 									<tr>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly>~<input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
+										<td align="center"><input type="date" style="width: 100px;">~<input type="date" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;" readonly></td>
 									</tr>
 									<tr>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly>~<input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
+										<td align="center"><input type="date" style="width: 100px;">~<input type="date" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;" readonly></td>
 									</tr>
 									<tr>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly>~<input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
-										<td align="center"><input type="text"
-											style="width: 100px;" readonly></td>
+										<td align="center"><input type="date" style="width: 100px;">~<input type="date" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;"></td>
+										<td align="center"><input type="text" style="width: 100px;" readonly></td>
 									</tr>
 									<tr>
 										<td align="center" colspan="1" bgcolor="skyblue">비과세퇴직급여</td>
@@ -181,15 +142,55 @@
 										<td align="center" colspan="2" bgcolor="skyblue">세액공제</td>
 									</tr>
 									<tr>
-										<td align="center" colspan="1"><input type="text"
-											style="width: 100px;"></td>
-										<td align="center" colspan="1"><input type="text"
-											style="width: 100px;"></td>
-										<td align="center" colspan="2"><input type="text"
-											style="width: 100px;"></td>
+										<td align="center" colspan="1"><input type="text" style="width: 100px;"></td>
+										<td align="center" colspan="1"><input type="text" style="width: 100px;"></td>
+										<td align="center" colspan="2"><input type="text" style="width: 100px;"></td>
 									</tr>
 								</table>
 							</td>
+						</tr>
+						<tr>
+							<td align="center" colspan="5"> <input type="button" value="퇴직금 계산하기"/></td>
+						</tr>
+						<tr>
+											<td colspan="9">
+												<table border="1" width="100%">
+													<tr>
+														<td align="center" bgcolor="skyblue">3개월 총계</td>
+														<td align="center" bgcolor="skyblue">1일 평균 임금</td>
+														<td align="center" bgcolor="skyblue">퇴직소득</td>
+														<td align="center" bgcolor="skyblue">퇴직일이 속하는 과세연도</td>
+														<td align="center" bgcolor="skyblue">산출세액</td>
+														<td align="center" bgcolor="skyblue">지방소득세</td>
+													</tr>
+													<tr>
+														<td align="center"><input type="text" readonly></td>
+														<td align="center"><input type="text" readonly></td>
+														<td align="center"><input type="text" readonly></td>
+														<td align="center"><input type="text" readonly></td>
+														<td align="center"><input type="text" readonly></td>
+														<td align="center"><input type="text" readonly></td>
+													</tr>
+													<tr>
+														<td align="center" bgcolor="grey">과세대상 퇴직급여</td>
+														<td align="center" bgcolor="grey">차감원천징수세액</td>
+														<td align="center" bgcolor="grey">실수령액</td>
+														<td align="center" bgcolor="grey">지급방법</td>
+														<td align="center" colspan="2" bgcolor="grey">지급일</td>
+													</tr>
+													<tr>
+														<td align="center"><input type="text" readonly>원</td>
+														<td align="center"><input type="text" readonly>원</td>
+														<td align="center"><input type="text" readonly>원</td>
+														<td align="center"><input type="text" ></td>
+														<td align="center" colspan="2"><input type="date"></td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+						<tr>
+							<td align="center" colspan="6"><input type="submit"
+								value="저장"> <input type="reset" value="취소"></td>
 						</tr>
 					</table>
 				</form>
