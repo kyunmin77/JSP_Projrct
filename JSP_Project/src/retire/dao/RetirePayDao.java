@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import jdbc.JdbcUtil;
 import retire.model.DayTerm;
 import retire.model.RetirePayRequest;
@@ -135,6 +137,8 @@ public class RetirePayDao {
 						rs.getInt("ret_realpay"), // 실수령액
 						rs.getString("how_to_pay"), // 지급방법
 						rs.getDate("ret_payday")); // 지급일
+
+				System.out.println(rs.getDate("hired_date"));
 			}
 			return rpr;
 		} finally {
@@ -198,12 +202,14 @@ public class RetirePayDao {
 
 			while (rs.next()) {
 
-				
-				
-				dayTerm = new DayTerm(rs.getDate("prev3_first"), rs.getDate("prev3_last"), rs.getInt("prev3_days"), selectSalSumFromSalary(conn, emp_no, rs.getDate("prev3_last")),
-						rs.getDate("prev2_first"), rs.getDate("prev2_last"), rs.getInt("prev2_days"), selectSalSumFromSalary(conn, emp_no,rs.getDate("prev2_last")),
-						rs.getDate("prev1_first"), rs.getDate("prev1_last"), rs.getInt("prev1_days"), selectSalSumFromSalary(conn, emp_no,rs.getDate("prev1_last")),
-						rs.getDate("this_first"), rs.getDate("this_last"), rs.getInt("this_days"), selectSalSumFromSalary(conn, emp_no,rs.getDate("this_last")));
+				dayTerm = new DayTerm(rs.getDate("prev3_first"), rs.getDate("prev3_last"), rs.getInt("prev3_days"),
+						selectSalSumFromSalary(conn, emp_no, rs.getDate("prev3_last")), rs.getDate("prev2_first"),
+						rs.getDate("prev2_last"), rs.getInt("prev2_days"),
+						selectSalSumFromSalary(conn, emp_no, rs.getDate("prev2_last")), rs.getDate("prev1_first"),
+						rs.getDate("prev1_last"), rs.getInt("prev1_days"),
+						selectSalSumFromSalary(conn, emp_no, rs.getDate("prev1_last")), rs.getDate("this_first"),
+						rs.getDate("this_last"), rs.getInt("this_days"),
+						selectSalSumFromSalary(conn, emp_no, rs.getDate("this_last")));
 			}
 			return dayTerm;
 		} finally {
@@ -212,81 +218,301 @@ public class RetirePayDao {
 		}
 
 	}
-	
-	
-	
-	//급여 테이블에서 급여 가져오기(정규직)
-		private int selectSalSumFromSalary(Connection conn, int emp_no, Date retired_date) throws SQLException {
 
+	// 급여 테이블에서 급여 가져오기(정규직)
+	private int selectSalSumFromSalary(Connection conn, int emp_no, Date retired_date) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int sal_sum = 0;
+
+		try {
+			pstmt = conn.prepareStatement("select sal_sum from salary where emp_no = " + emp_no + " and sal_year= "
+					+ getYearFromDate(conn, retired_date) + " and sal_month= " + getMonthFromDate(conn, retired_date));
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				sal_sum = rs.getInt("sal_sum");
+			}
+			return sal_sum;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+
+	}
+
+	// Date 입력 시 년도 추출하기
+	public int getYearFromDate(Connection conn, Date retired_date) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int year = 0;
+
+		try {
+			pstmt = conn
+					.prepareStatement("select extract (year from to_date('" + retired_date + "')) as year from dual");
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				year = rs.getInt("year");
+			}
+			return year;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+
+	}
+
+	// Date 입력 시 월 추출하기
+	private int getMonthFromDate(Connection conn, Date retired_date) throws SQLException {
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int month = 0;
+
+		try {
+			pstmt = conn
+					.prepareStatement("select extract (month from to_date('" + retired_date + "')) as month from dual");
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				month = rs.getInt("month");
+			}
+			return month;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+
+	}
+
+	// 퇴직금 계산하기 버튼 클릭 시 insert
+	public RetirePayRequest calcRetirepayInsert(Connection conn, HttpServletRequest req) throws Exception {
+
+		RetirePayRequest rpr = null;
+		
+		// 입사일
+		String hired_date = req.getParameter("hired_date");
+		// 퇴직일
+		String retired_date = req.getParameter("retired_date");
+		
+//여기서부터 퇴직급여 테이블
+		//사원번호
+		int emp_no = Integer.parseInt(req.getParameter("emp_no"));
+
+		String ret_calc_type = req.getParameter("ret_calc_type");
+		String ret_calc_type_mid = (String) ((ret_calc_type.equals("중간정산")) ? "중간정산" : null);
+		String ret_calc_type_retire = (String) ((ret_calc_type.equals("퇴직정산")) ? "퇴직정산" : null);
+		
+		// 기타과세소득지급일 
+		String ret_other_date = req.getParameter("ret_other_date");
+		
+		//기타과세소득 지급항목
+		String ret_other_name = req.getParameter("ret_other_name");
+		
+		//기타과세소득 금액
+		String ret_other_cost = req.getParameter("ret_other_cost");
+		
+		String ret_prize = req.getParameter("ret_prize");
+		
+		String ret_notice = req.getParameter("ret_notice");
+		
+		String ret_tax_free_pay = req.getParameter("ret_tax_free_pay");
+		
+		String ret_ad_pay = req.getParameter("ret_ad_pay");
+		//세액공제
+		String ret_tax_free = req.getParameter("ret_tax_free");
+
+		String ret_3mon_sum = req.getParameter("ret_3mon_sum");
+		
+		String ret_day_avg = req.getParameter("ret_day_avg");
+		
+		String name_kor = req.getParameter("name_kor");
+		
+		String job = req.getParameter("job");
+		
+		String years_service = req.getParameter("years_service");
+		
+		String days_service = req.getParameter("days_service");
+
+
+		try {
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
-			int sal_sum = 0;
+			
+			if (ret_other_date.equals(null)||ret_other_date.isEmpty()) {
+				System.out.println("날짜가 널일 때");
+				
+				pstmt = conn.prepareStatement(
+						"select hired_date, retired_date, emp_no, ret_calc_type_mid, ret_calc_type_retire,"
+						+ " ret_other_name, ret_other_cost, ret_prize, ret_notice,"
+						+ " ret_tax_free_pay, ret_ad_pay, ret_tax_free, ret_3mon_sum, ret_day_avg,"
+						+ " name_kor, job, years_service, days_service"
+						+ " from (select ? as hired_date, ? as retired_date, ? as emp_no, ? as ret_calc_type_mid, ? as ret_calc_type_retire,"
+						+ " ? as ret_other_name, ? as ret_other_cost, ? as ret_prize, ? as ret_notice,"
+						+ " ? as ret_tax_free_pay, ? as ret_ad_pay, ? as ret_tax_free, ? as ret_3mon_sum, ? as ret_day_avg,"
+						+ " ? as name_kor, ? as job, ? as years_service, ? as days_service"
+						+ " from dual)");
+		
+		pstmt.setDate(1, java.sql.Date.valueOf(hired_date));
+		pstmt.setDate(2, java.sql.Date.valueOf(retired_date));
+		pstmt.setInt(3, emp_no);
+		pstmt.setString(4, ret_calc_type_mid);
+		pstmt.setString(5, ret_calc_type_retire);
+		//pstmt.setDate(6, java.sql.Date.valueOf(ret_other_date)); // 기타과세소득지급일
+		pstmt.setString(6, ret_other_name);
+		pstmt.setString(7, ret_other_cost);
+		pstmt.setString(8, ret_prize); // 
+		pstmt.setString(9, ret_notice); // 
+		pstmt.setString(10, ret_tax_free_pay); // 
+		pstmt.setString(11, ret_ad_pay); // 
+		pstmt.setString(12, ret_tax_free); // 
+		pstmt.setString(13, ret_3mon_sum); // 
+		pstmt.setString(14, ret_day_avg); // 
+		pstmt.setString(15, name_kor); // 
+		pstmt.setString(16, job); // 
+		pstmt.setString(17, years_service); // 
+		pstmt.setString(18, days_service); // 
 
-			try {
-				pstmt = conn.prepareStatement("select sal_sum from salary where emp_no = " + emp_no +" and sal_year= " + getYearFromDate(conn, retired_date) + " and sal_month= " + getMonthFromDate(conn, retired_date));
+		rs = pstmt.executeQuery();
+
+		while (rs.next()) {
+
+			rpr = new RetirePayRequest(//
+					rs.getInt("emp_no"),		//
+					rs.getString("ret_calc_type_mid"),//
+					rs.getString("ret_calc_type_retire"),//
+					null,		//emp_type 정규직
+					rs.getString("name_kor"),	//
+					rs.getString("job"),		//
+					null,		//dept
+					null,		//state
+					rs.getDate("hired_date"),	//
+					rs.getDate("retired_date"),//
+					rs.getInt("years_service"),//
+					rs.getInt("days_service"), //
+					null,//
+					rs.getString("ret_other_name"),//
+					rs.getInt("ret_other_cost"),//
+					rs.getInt("ret_prize"), //
+					rs.getInt("ret_notice"),//
+					rs.getInt("ret_tax_free_pay"),//비과세퇴직급여
+					rs.getInt("ret_ad_pay"),//기납부세액
+					rs.getInt("ret_tax_free"),//새엑공제
+					rs.getInt("ret_3mon_sum"),//3개월총계
+					rs.getInt("ret_day_avg"),//1일평균임금
+					rs.getInt("ret_3mon_sum")*3,//퇴직소득
+					getYearFromDate(conn, rs.getDate("retired_date")), //퇴직일과세연도
+					rs.getInt("ret_3mon_sum")*3/202, // 산출세액
+					rs.getInt("ret_3mon_sum")*3/100, // 퇴직소득세
+					rs.getInt("ret_3mon_sum")*3/1005, // 지방소득세
+					0, // 실수령액
+					"지급방법",//지급방법
+					null//지급일
+					);
+			
+			
+			System.out.println(rpr.toString());
+		}
+		
+		
+		JdbcUtil.close(pstmt);
+		return rpr;
+			} else {
+				System.out.println("날짜가 널이 아닐 때 ");
+
+
+				pstmt = conn.prepareStatement(
+								"select hired_date, retired_date, emp_no, ret_calc_type_mid, ret_calc_type_retire,"
+								+ " ret_other_date, ret_other_name, ret_other_cost, ret_prize, ret_notice,"
+								+ " ret_tax_free_pay, ret_ad_pay, ret_tax_free, ret_3mon_sum, ret_day_avg,"
+								+ " name_kor, job, years_service, days_service"
+								+ " from (select ? as hired_date, ? as retired_date, ? as emp_no, ? as ret_calc_type_mid, ? as ret_calc_type_retire,"
+								+ " ? as ret_other_date, ? as ret_other_name, ? as ret_other_cost, ? as ret_prize, ? as ret_notice,"
+								+ " ? as ret_tax_free_pay, ? as ret_ad_pay, ? as ret_tax_free, ? as ret_3mon_sum, ? as ret_day_avg,"
+								+ " ? as name_kor, ? as job, ? as years_service, ? as days_service"
+								+ " from dual)");
+				
+				pstmt.setDate(1, java.sql.Date.valueOf(hired_date));
+				pstmt.setDate(2, java.sql.Date.valueOf(retired_date));
+				pstmt.setInt(3, emp_no);
+				pstmt.setString(4, ret_calc_type_mid);
+				pstmt.setString(5, ret_calc_type_retire);
+				pstmt.setDate(6, java.sql.Date.valueOf(ret_other_date)); // 기타과세소득지급일
+				pstmt.setString(7, ret_other_name);
+				pstmt.setString(8, ret_other_cost);
+				pstmt.setString(9, ret_prize); // 
+				pstmt.setString(10, ret_notice); // 
+				pstmt.setString(11, ret_tax_free_pay); // 
+				pstmt.setString(12, ret_ad_pay); // 
+				pstmt.setString(13, ret_tax_free); // 
+				pstmt.setString(14, ret_3mon_sum); // 
+				pstmt.setString(15, ret_day_avg); // 
+				pstmt.setString(16, name_kor); // 
+				pstmt.setString(17, job); // 
+				pstmt.setString(18, years_service); // 
+				pstmt.setString(19, days_service); // 
 
 				rs = pstmt.executeQuery();
 
 				while (rs.next()) {
 
-					sal_sum = rs.getInt("sal_sum");
+					rpr = new RetirePayRequest(//
+							rs.getInt("emp_no"),		//
+							rs.getString("ret_calc_type_mid"),//
+							rs.getString("ret_calc_type_retire"),//
+							null,		//emp_type 정규직
+							rs.getString("name_kor"),	//
+							rs.getString("job"),		//
+							null,		//dept
+							null,		//state
+							rs.getDate("hired_date"),	//
+							rs.getDate("retired_date"),//
+							rs.getInt("years_service"),//
+							rs.getInt("days_service"), //
+							rs.getDate("ret_other_date"),//
+							rs.getString("ret_other_name"),//
+							rs.getInt("ret_other_cost"),//
+							rs.getInt("ret_prize"), //
+							rs.getInt("ret_notice"),//
+							rs.getInt("ret_tax_free_pay"),//비과세퇴직급여
+							rs.getInt("ret_ad_pay"),//기납부세액
+							rs.getInt("ret_tax_free"),//새엑공제
+							rs.getInt("ret_3mon_sum"),//3개월총계
+							rs.getInt("ret_day_avg"),//1일평균임금
+							rs.getInt("ret_3mon_sum")*3,//퇴직소득
+							getYearFromDate(conn, rs.getDate("retired_date")), //퇴직일과세연도
+							rs.getInt("ret_3mon_sum")*3/202, // 산출세액
+							rs.getInt("ret_3mon_sum")*3/100, // 퇴직소득세
+							rs.getInt("ret_3mon_sum")*3/1005, // 지방소득세
+							0, // 실수령액
+							"지급방법",//지급방법
+							null//지급일
+							);
+					
 				}
-				return sal_sum;
-			} finally {
-				JdbcUtil.close(rs);
+				
+				
 				JdbcUtil.close(pstmt);
+				return rpr;
 			}
-
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		
+		return null;
+	}
 
-		//Date 입력 시 년도 추출하기
-		public int getYearFromDate(Connection conn, Date retired_date) throws SQLException {
+	// 퇴직금 계산하기 버튼 클릭 시 delete
+	public void calcRetirepayDelete(Connection conn) {
 
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			int year = 0;
-			
-			try {
-				pstmt = conn.prepareStatement("select extract (year from to_date('" + retired_date + "')) as year from dual");
+	}
 
-				rs = pstmt.executeQuery();
-
-				while (rs.next()) {
-
-					year = rs.getInt("year");
-				}
-				return year;
-			} finally {
-				JdbcUtil.close(rs);
-				JdbcUtil.close(pstmt);
-			}
-
-		}
-		
-		//Date 입력 시 월 추출하기
-			private int getMonthFromDate(Connection conn, Date retired_date) throws SQLException {
-
-				PreparedStatement pstmt = null;
-				ResultSet rs = null;
-				int month = 0;
-
-				try {
-					pstmt = conn.prepareStatement("select extract (month from to_date('" + retired_date + "')) as month from dual");
-
-					rs = pstmt.executeQuery();
-
-					while (rs.next()) {
-
-						month = rs.getInt("month");
-					}
-					return month;
-				} finally {
-					JdbcUtil.close(rs);
-					JdbcUtil.close(pstmt);
-				}
-
-			}
-			
-		
 }

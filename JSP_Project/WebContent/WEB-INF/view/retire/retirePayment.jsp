@@ -123,8 +123,8 @@ window.onload = function() {
                                         <td align="center" colspan="2" bgcolor="skyblue">해고예고수당</td>
                                     </tr>
                                     <tr>
-                                        <td align="center" colspan="1"><input type="text" value="${ret_prize}" name="ret_prize" style="width: 100px;"></td>
-                                        <td align="center" colspan="2"><input type="text" value="${ret_notice}" name="ret_notice" style="width: 100px;"></td>
+                                        <td align="center" colspan="1"><input type="text" value="${rpr.ret_prize}" name="ret_prize" style="width: 100px;"></td>
+                                        <td align="center" colspan="2"><input type="text" value="${rpr.ret_notice}" name="ret_notice" style="width: 100px;"></td>
                                     </tr>
                                 </table>
                             </td>
@@ -142,10 +142,10 @@ window.onload = function() {
                                         <td align="center" bgcolor="skyblue">3개월분</td>
                                     </tr>
                                     <tr>
-                                        <td align="center"><input type="date" value="${ret_other_date}" name="ret_other_date" style="width: 100px;"></td>
-                                        <td align="center"><input type="text" value="${ret_other_name}" name="ret_other_name" style="width: 100px;"></td>
-                                        <td align="center"><input type="text" value="${ret_other_cost}" name="ret_other_cost" style="width: 100px;"></td>
-                                        <td align="center"><input type="text" value="${ret_other_3month}" name="ret_other_3month" style="width: 100px;" readonly></td>
+                                        <td align="center"><input type="date" value="${rpr.ret_other_date}" name="ret_other_date" style="width: 100px;"></td>
+                                        <td align="center"><input type="text" value="${rpr.ret_other_name}" name="ret_other_name" style="width: 100px;"></td>
+                                        <td align="center"><input type="text" value="${rpr.ret_other_cost}" name="ret_other_cost" style="width: 100px;"></td>
+                                        <td align="center"><input type="text" value="${(rpr.ret_other_cost/40)*10}" name="ret_other_3month" style="width: 100px;" readonly></td>
                                     </tr>
                                     <tr>
                                         <td align="center"><input type="date" name="ret_other_date1" style="width: 100px;"></td>
@@ -177,9 +177,9 @@ window.onload = function() {
                                         <td align="center" colspan="2" bgcolor="skyblue">세액공제</td>
                                     </tr>
                                     <tr>
-                                        <td align="center" colspan="1"><input type="text" value="${ret_tax_free_pay}" name="ret_tax_free_pay" style="width: 100px;"></td>
-                                        <td align="center" colspan="1"><input type="text" value="${ret_ad_pay}" name="ret_ad_pay" style="width: 100px;"></td>
-                                        <td align="center" colspan="2"><input type="text" value="${ret_tax_free}" name="ret_tax_free" style="width: 100px;"></td>
+                                        <td align="center" colspan="1"><input type="text" value="${rpr.ret_tax_free_pay}" name="ret_tax_free_pay" style="width: 100px;"></td>
+                                        <td align="center" colspan="1"><input type="text" value="${rpr.ret_ad_pay}" name="ret_ad_pay" style="width: 100px;"></td>
+                                        <td align="center" colspan="2"><input type="text" value="${rpr.ret_tax_free}" name="ret_tax_free" style="width: 100px;"></td>
                                     </tr>
                                 </table>
                             </td>
@@ -216,11 +216,11 @@ window.onload = function() {
                                         <td align="center" colspan="2" bgcolor="grey">지급일</td>
                                     </tr>
                                     <tr>
-                                        <td align="center"><input type="text" readonly>원</td>
-                                        <td align="center"><input type="text" readonly>원</td>
-                                        <td align="center"><input type="text" readonly>원</td>
-                                        <td align="center" colspan="2"><input type="text"></td>
-                                        <td align="center" colspan="2"><input type="date"></td>
+                                        <td align="center"><input type="text" value="${rpr.ret_pay*rpr.years_service+rpr.ret_prize+rpr.ret_notice-rpr.ret_tax_free_pay-rpr.ret_ad_pay-rpr.ret_tax_free+(rpr.ret_other_cost/40)}" readonly>원</td>
+                                        <td align="center"><input type="text" value="0" readonly>원</td>
+                                        <td align="center"><input type="text" value="${rpr.ret_realpay}" readonly>원</td>
+                                        <td align="center" colspan="2"><input type="text" value="${rpr.how_to_pay}"></td>
+                                        <td align="center" colspan="2" ><input type="date" value="${rpr.ret_payday}" name="ret_payday"></td>
                                     </tr>
                                 </table>
                             </td>
