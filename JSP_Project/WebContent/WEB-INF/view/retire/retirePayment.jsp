@@ -5,6 +5,7 @@
 <%@ page autoFlush="true"%>
 <%@ page isThreadSafe="true"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.text.DecimalFormat" %>
 
 <!DOCTYPE html>
 <html>
@@ -216,9 +217,9 @@ window.onload = function() {
                                         <td align="center" colspan="2" bgcolor="grey">지급일</td>
                                     </tr>
                                     <tr>
-                                        <td align="center"><input type="text" value="${rpr.ret_pay*rpr.years_service+rpr.ret_prize+rpr.ret_notice-rpr.ret_tax_free_pay-rpr.ret_ad_pay-rpr.ret_tax_free+(rpr.ret_other_cost/40)}" readonly>원</td>
-                                        <td align="center"><input type="text" value="0" readonly>원</td>
-                                        <td align="center"><input type="text" value="${rpr.ret_realpay}" readonly>원</td>
+                                        <td align="center"><fmt:formatNumber value="${rpr.ret_pay*rpr.years_service+rpr.ret_prize+rpr.ret_notice-rpr.ret_tax_free_pay-rpr.ret_ad_pay-rpr.ret_tax_free+(rpr.ret_other_cost/40)}" type="number" maxFractionDigits="0"/>원</td>
+                                        <td align="center"><fmt:formatNumber  value="${rpr.ret_income_tax-rpr.ret_local_tax}" type="number" maxFractionDigits="0"/>원</td>
+                                        <td align="center"><fmt:formatNumber value="${rpr.ret_realpay}" type="number" maxFractionDigits="0"/>원</td>
                                         <td align="center" colspan="2"><input type="text" value="${rpr.how_to_pay}"></td>
                                         <td align="center" colspan="2" ><input type="date" value="${rpr.ret_payday}" name="ret_payday"></td>
                                     </tr>

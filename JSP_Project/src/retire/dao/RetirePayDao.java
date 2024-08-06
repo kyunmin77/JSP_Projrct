@@ -414,13 +414,12 @@ public class RetirePayDao {
 					rs.getInt("ret_3mon_sum")*3/202, // 산출세액
 					rs.getInt("ret_3mon_sum")*3/100, // 퇴직소득세
 					rs.getInt("ret_3mon_sum")*3/1005, // 지방소득세
-					0, // 실수령액
-					"지급방법",//지급방법
+					rs.getInt("ret_3mon_sum")*3*Integer.parseInt(years_service)+rs.getInt("ret_prize")+rs.getInt("ret_notice")-rs.getInt("ret_tax_free_pay")-rs.getInt("ret_ad_pay")-rs.getInt("ret_tax_free")+rs.getInt("ret_other_cost")/40-rs.getInt("ret_3mon_sum")*3/100-rs.getInt("ret_3mon_sum")*3/1005, // 실수령액
+					null,//지급방법
 					null//지급일
 					);
 			
 			
-			System.out.println(rpr.toString());
 		}
 		
 		
@@ -493,11 +492,10 @@ public class RetirePayDao {
 							rs.getInt("ret_3mon_sum")*3/202, // 산출세액
 							rs.getInt("ret_3mon_sum")*3/100, // 퇴직소득세
 							rs.getInt("ret_3mon_sum")*3/1005, // 지방소득세
-							0, // 실수령액
-							"지급방법",//지급방법
+							rs.getInt("ret_3mon_sum")*3*Integer.parseInt(years_service)+rs.getInt("ret_prize")+rs.getInt("ret_notice")-rs.getInt("ret_tax_free_pay")-rs.getInt("ret_ad_pay")-rs.getInt("ret_tax_free")+rs.getInt("ret_other_cost")/40-rs.getInt("ret_3mon_sum")*3/100-rs.getInt("ret_3mon_sum")*3/1005, // 실수령액
+							null,//지급방법
 							null//지급일
 							);
-					
 				}
 				
 				
