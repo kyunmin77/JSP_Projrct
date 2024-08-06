@@ -53,6 +53,7 @@
 		</tr>
 		<tr>
 			<td>
+			<h2>社員退職処理</h2>
 				<form action="${pageContext.request.contextPath}/retireProcess.do" method="get">
 					<table width='100%'>
 						<tr>

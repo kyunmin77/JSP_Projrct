@@ -565,7 +565,6 @@ public class RetirePayDao {
 
 			if (ret_other_date.equals(null) || ret_other_date.isEmpty()) {
 
-				System.out.println("null일때");
 				pstmt = conn.prepareStatement(
 						"insert into retire_payment (emp_no, ret_calc_type_mid, ret_calc_type_retire, ret_other_date, ret_other_name,"
 								+ " ret_other_cost, ret_prize, ret_notice, ret_tax_free_pay, ret_ad_pay,"

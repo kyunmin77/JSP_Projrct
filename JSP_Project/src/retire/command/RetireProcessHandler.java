@@ -16,7 +16,8 @@ import retire.service.RetireService;
 public class RetireProcessHandler implements CommandHandler {
 
 	private RetireService empRetireService = new RetireService();
-
+	private static final String FORM_VIEW = "/WEB-INF/view/retire/retireProcess.jsp";
+	
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse res) throws Exception {
 		if (req.getMethod().equalsIgnoreCase("GET")) {
@@ -57,8 +58,7 @@ public class RetireProcessHandler implements CommandHandler {
 		}
 		
 				
-		req.getRequestDispatcher("/WEB-INF/view/retire/retireProcess.jsp").forward(req, res);
-		return null;
+		return FORM_VIEW;
 
 	}
 
@@ -85,9 +85,8 @@ public class RetireProcessHandler implements CommandHandler {
 			List<RetireProcessRequest> list = empRetireService.selectAll();
 			req.setAttribute("list", list);
 
-			req.getRequestDispatcher("/WEB-INF/view/retire/retireProcess.jsp").forward(req, res);
 
-			return null;
+			return FORM_VIEW;
 
 		} else {
 
@@ -95,9 +94,8 @@ public class RetireProcessHandler implements CommandHandler {
 			List<RetireProcessRequest> list = empRetireService.selectAll();
 			req.setAttribute("list", list);
 
-			req.getRequestDispatcher("/WEB-INF/view/retire/retireProcess.jsp").forward(req, res);
 
-			return null;
+			return FORM_VIEW;
 
 		}
 

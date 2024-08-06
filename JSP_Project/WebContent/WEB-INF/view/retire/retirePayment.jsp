@@ -104,7 +104,7 @@ window.onload = function() {
                                             <input type="date" style="width: 100px;" value="${dayTerm.prev1_last}" readonly>
                                         </td>
                                         <td align="center"><input type="text" style="width: 100px;" value="${dayTerm.prev1_days}" readonly></td>
-                                        <td align="center"><fmt:formatNumber value="${dayTerm.prev1_sal_sum}"/></td>
+                                        <td align="center"><fmt:formatNumber value="${dayTerm.prev1_sal_sum}" type="number" maxFractionDigits="0"/></td>
                                     </tr>
                                     <tr>
                                         <td align="center">
@@ -112,12 +112,12 @@ window.onload = function() {
                                             <input type="date" style="width: 100px;" value="${dayTerm.this_last}" readonly>
                                         </td>
                                         <td align="center"><input type="text" style="width: 100px;" value="${dayTerm.this_days}" readonly></td>
-                                        <td align="center"><fmt:formatNumber value="${dayTerm.this_sal_sum}"/></td>
+                                        <td align="center"><fmt:formatNumber value="${dayTerm.this_sal_sum}" type="number" maxFractionDigits="0"/></td>
                                     </tr>
                                     <tr>
                                         <td align="center" bgcolor="skyblue">총 합계</td>
                                         <td align="center"><input type="text" style="width: 100px;" value="${dayTerm.prev3_days+dayTerm.prev2_days+dayTerm.prev1_days+dayTerm.this_days}" readonly></td>
-                                        <td align="center"><fmt:formatNumber value="${dayTerm.prev3_sal_sum+dayTerm.prev2_sal_sum+dayTerm.prev1_sal_sum+dayTerm.this_sal_sum}"/></td>
+                                        <td align="center"><fmt:formatNumber value="${dayTerm.prev3_sal_sum+dayTerm.prev2_sal_sum+dayTerm.prev1_sal_sum+dayTerm.this_sal_sum}" type="number" maxFractionDigits="0"/></td>
                                     </tr>
                                     <tr>
                                         <td align="center" colspan="1" bgcolor="skyblue">퇴직위로금</td>
