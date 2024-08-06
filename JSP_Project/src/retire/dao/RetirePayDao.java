@@ -138,7 +138,6 @@ public class RetirePayDao {
 						rs.getString("how_to_pay"), // 지급방법
 						rs.getDate("ret_payday")); // 지급일
 
-				System.out.println(rs.getDate("hired_date"));
 			}
 			return rpr;
 		} finally {
@@ -295,7 +294,7 @@ public class RetirePayDao {
 	}
 
 	// 퇴직금 계산하기 버튼 클릭 시 insert
-	public RetirePayRequest calcRetirepayInsert(Connection conn, HttpServletRequest req) throws Exception {
+	public RetirePayRequest pushCalcRetirepay(Connection conn, HttpServletRequest req) throws Exception {
 
 		RetirePayRequest rpr = null;
 		
@@ -349,7 +348,6 @@ public class RetirePayDao {
 			ResultSet rs = null;
 			
 			if (ret_other_date.equals(null)||ret_other_date.isEmpty()) {
-				System.out.println("날짜가 널일 때");
 				
 				pstmt = conn.prepareStatement(
 						"select hired_date, retired_date, emp_no, ret_calc_type_mid, ret_calc_type_retire,"
@@ -404,7 +402,7 @@ public class RetirePayDao {
 					rs.getInt("ret_other_cost"),//
 					rs.getInt("ret_prize"), //
 					rs.getInt("ret_notice"),//
-					rs.getInt("ret_tax_free_pay"),//비과세퇴직급여
+					rs.getInt("ret_tax_free_pay"),//비과세퇴직급여 
 					rs.getInt("ret_ad_pay"),//기납부세액
 					rs.getInt("ret_tax_free"),//새엑공제
 					rs.getInt("ret_3mon_sum"),//3개월총계
@@ -426,8 +424,6 @@ public class RetirePayDao {
 		JdbcUtil.close(pstmt);
 		return rpr;
 			} else {
-				System.out.println("날짜가 널이 아닐 때 ");
-
 
 				pstmt = conn.prepareStatement(
 								"select hired_date, retired_date, emp_no, ret_calc_type_mid, ret_calc_type_retire,"

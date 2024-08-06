@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import retire.dao.RetirePayDao;
@@ -87,5 +89,19 @@ public class RetirePayService {
 		}
 	}
 	
+	
+	public RetirePayRequest pushCalcRetirepay(HttpServletRequest req) throws Exception {
+		try {
+			conn = ConnectionProvider.getConnection();
+
+			return retirePayDao.pushCalcRetirepay(conn, req);
+			
+		} catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+	}
 	
 }

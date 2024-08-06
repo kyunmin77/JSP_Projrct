@@ -48,10 +48,7 @@ public class RetirePaymentHandler implements CommandHandler {
 	private String processSubmit(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
 		
-		Connection conn = ConnectionProvider.getConnection();
-		RetirePayDao retirePayDao = new RetirePayDao();
-		retirePayDao.calcRetirepayInsert(conn, req);
-		
+
 		
 		int emp_no = Integer.parseInt(req.getParameter("emp_no"));
 		Date date = retirePayService.retiredDateByEmpNo(emp_no);
@@ -67,7 +64,7 @@ public class RetirePaymentHandler implements CommandHandler {
 
 			System.out.println("퇴직금 계산하기 버튼 클릭");
 			
-			RetirePayRequest rpr = retirePayDao.calcRetirepayInsert(conn, req);
+			RetirePayRequest rpr = retirePayService.pushCalcRetirepay(req);
 			req.setAttribute("rpr", rpr);
 			req.getRequestDispatcher(FORM_VIEW).forward(req, res);
 		}

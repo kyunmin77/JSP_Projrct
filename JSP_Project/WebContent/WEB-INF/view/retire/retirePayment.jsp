@@ -218,16 +218,18 @@ window.onload = function() {
                                     </tr>
                                     <tr>
                                         <td align="center"><fmt:formatNumber value="${rpr.ret_pay*rpr.years_service+rpr.ret_prize+rpr.ret_notice-rpr.ret_tax_free_pay-rpr.ret_ad_pay-rpr.ret_tax_free+(rpr.ret_other_cost/40)}" type="number" maxFractionDigits="0"/>원</td>
-                                        <td align="center"><fmt:formatNumber  value="${rpr.ret_income_tax-rpr.ret_local_tax}" type="number" maxFractionDigits="0"/>원</td>
+                           
+                                        <td align="center"><fmt:formatNumber  value="${rpr.ret_income_tax+rpr.ret_local_tax}" type="number" maxFractionDigits="0"/>원</td>
                                         <td align="center"><fmt:formatNumber value="${rpr.ret_realpay}" type="number" maxFractionDigits="0"/>원</td>
-                                        <td align="center" colspan="2"><input type="text" value="${rpr.how_to_pay}"></td>
+                                       	<input type="hidden" name = "ret_realpay" value="${rpr.ret_realpay}"/>
+                                        <td align="center" colspan="2"><input type="text" value="${rpr.how_to_pay}" name="how_to_pay " placeholder="계좌이체 등..."></td>
                                         <td align="center" colspan="2" ><input type="date" value="${rpr.ret_payday}" name="ret_payday"></td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
                         <tr>
-                            <td align="center" colspan="6"><input type="submit" value="저장"> <input type="reset" value="초기화"> <input type="submit" name="calcel" value="취소"> </td>
+                            <td align="center" colspan="6"><input type="submit" value="저장">&nbsp;<input type="submit" name="calcel" value="취소"> </td>
                         </tr>
                     </table>
                 </form>
