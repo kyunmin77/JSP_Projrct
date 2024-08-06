@@ -104,4 +104,19 @@ public class RetirePayService {
 		}
 	}
 	
+	
+	public void retirepayInsert(HttpServletRequest req) {
+		try {
+			conn = ConnectionProvider.getConnection();
+
+			retirePayDao.retirepayInsert(conn, req); 
+			
+		} catch (SQLException e) {
+			JdbcUtil.rollback(conn);
+			throw new RuntimeException(e);
+		} finally {
+			JdbcUtil.close(conn);
+		}
+	}
+	
 }

@@ -1,14 +1,11 @@
 package retire.command;
 
-import java.sql.Connection;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jdbc.connection.ConnectionProvider;
 import mvc.command.CommandHandler;
-import retire.dao.RetirePayDao;
 import retire.model.DayTerm;
 import retire.model.RetirePayRequest;
 import retire.service.RetirePayService;
@@ -56,20 +53,26 @@ public class RetirePaymentHandler implements CommandHandler {
 		req.setAttribute("dayTerm", dayTerm);
 		
 		String button = " ";
-		if (req.getParameter("calc") != null) {
-			button = req.getParameter("calc");
+		if (req.getParameter("button") != null) {
+			button = req.getParameter("button");
 		}
 
-		if (button.equals("퇴직금 계산하기")) { // 퇴직금 계산하기 버튼을 눌렀을 때
-
-			System.out.println("퇴직금 계산하기 버튼 클릭");
-			
+		if (button.equals("퇴직금 계산하기")) { // 퇴직금 계산하기 버튼을 눌렀을 때			
 			RetirePayRequest rpr = retirePayService.pushCalcRetirepay(req);
 			req.setAttribute("rpr", rpr);
 			req.getRequestDispatcher(FORM_VIEW).forward(req, res);
+		} else if (button.equals("저장")) {
+			System.out.println("저장");
+			retirePayService.retirepayInsert(req);
+			RetirePayRequest rpr = retirePayService.selectOne(emp_no);
+			req.setAttribute("rpr", rpr);
+
+
+			req.getRequestDispatcher(FORM_VIEW).forward(req, res);
+		} else if (button.equals("취소")) {
+			System.out.println("취소");
+			res.sendRedirect(req.getContextPath()+"/retirePay.do");
 		}
-		
-		
 		return null;
 
 	}

@@ -186,7 +186,7 @@ window.onload = function() {
                             </td>
                         </tr>
                         <tr>
-                            <td align="center" colspan="5"><input type="submit" name="calc" value="퇴직금 계산하기"/></td>
+                            <td align="center" colspan="5"><input type="submit" name="button" value="퇴직금 계산하기"/></td>
                         </tr>
                         <tr>
                             <td colspan="9">
@@ -222,14 +222,14 @@ window.onload = function() {
                                         <td align="center"><fmt:formatNumber  value="${rpr.ret_income_tax+rpr.ret_local_tax}" type="number" maxFractionDigits="0"/>원</td>
                                         <td align="center"><fmt:formatNumber value="${rpr.ret_realpay}" type="number" maxFractionDigits="0"/>원</td>
                                        	<input type="hidden" name = "ret_realpay" value="${rpr.ret_realpay}"/>
-                                        <td align="center" colspan="2"><input type="text" value="${rpr.how_to_pay}" name="how_to_pay " placeholder="계좌이체 등..."></td>
+                                        <td align="center" colspan="2"><input type="text" value="${rpr.how_to_pay}" name="how_to_pay" placeholder="계좌이체 등..."></td>
                                         <td align="center" colspan="2" ><input type="date" value="${rpr.ret_payday}" name="ret_payday"></td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
                         <tr>
-                            <td align="center" colspan="6"><input type="submit" value="저장">&nbsp;<input type="submit" name="calcel" value="취소"> </td>
+                            <td align="center" colspan="6"><input type="submit" name="button" value="저장">&nbsp;<input type="submit" name="button" value="취소"> </td>
                         </tr>
                     </table>
                 </form>

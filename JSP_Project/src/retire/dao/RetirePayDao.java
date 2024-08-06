@@ -293,149 +293,147 @@ public class RetirePayDao {
 
 	}
 
-	// 퇴직금 계산하기 버튼 클릭 시 insert
+	// 퇴직금 계산하기 버튼 클릭 시 계산
 	public RetirePayRequest pushCalcRetirepay(Connection conn, HttpServletRequest req) throws Exception {
 
 		RetirePayRequest rpr = null;
-		
+
 		// 입사일
 		String hired_date = req.getParameter("hired_date");
 		// 퇴직일
 		String retired_date = req.getParameter("retired_date");
-		
+
 //여기서부터 퇴직급여 테이블
-		//사원번호
+		// 사원번호
 		int emp_no = Integer.parseInt(req.getParameter("emp_no"));
 
 		String ret_calc_type = req.getParameter("ret_calc_type");
 		String ret_calc_type_mid = (String) ((ret_calc_type.equals("중간정산")) ? "중간정산" : null);
 		String ret_calc_type_retire = (String) ((ret_calc_type.equals("퇴직정산")) ? "퇴직정산" : null);
-		
-		// 기타과세소득지급일 
+
+		// 기타과세소득지급일
 		String ret_other_date = req.getParameter("ret_other_date");
-		
-		//기타과세소득 지급항목
+
+		// 기타과세소득 지급항목
 		String ret_other_name = req.getParameter("ret_other_name");
-		
-		//기타과세소득 금액
+
+		// 기타과세소득 금액
 		String ret_other_cost = req.getParameter("ret_other_cost");
-		
+
 		String ret_prize = req.getParameter("ret_prize");
-		
+
 		String ret_notice = req.getParameter("ret_notice");
-		
+
 		String ret_tax_free_pay = req.getParameter("ret_tax_free_pay");
-		
+
 		String ret_ad_pay = req.getParameter("ret_ad_pay");
-		//세액공제
+		// 세액공제
 		String ret_tax_free = req.getParameter("ret_tax_free");
 
 		String ret_3mon_sum = req.getParameter("ret_3mon_sum");
-		
-		String ret_day_avg = req.getParameter("ret_day_avg");
-		
-		String name_kor = req.getParameter("name_kor");
-		
-		String job = req.getParameter("job");
-		
-		String years_service = req.getParameter("years_service");
-		
-		String days_service = req.getParameter("days_service");
 
+		String ret_day_avg = req.getParameter("ret_day_avg");
+
+		String name_kor = req.getParameter("name_kor");
+
+		String job = req.getParameter("job");
+
+		String years_service = req.getParameter("years_service");
+
+		String days_service = req.getParameter("days_service");
 
 		try {
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
-			
-			if (ret_other_date.equals(null)||ret_other_date.isEmpty()) {
-				
+
+			if (ret_other_date.equals(null) || ret_other_date.isEmpty()) {
+
 				pstmt = conn.prepareStatement(
 						"select hired_date, retired_date, emp_no, ret_calc_type_mid, ret_calc_type_retire,"
-						+ " ret_other_name, ret_other_cost, ret_prize, ret_notice,"
-						+ " ret_tax_free_pay, ret_ad_pay, ret_tax_free, ret_3mon_sum, ret_day_avg,"
-						+ " name_kor, job, years_service, days_service"
-						+ " from (select ? as hired_date, ? as retired_date, ? as emp_no, ? as ret_calc_type_mid, ? as ret_calc_type_retire,"
-						+ " ? as ret_other_name, ? as ret_other_cost, ? as ret_prize, ? as ret_notice,"
-						+ " ? as ret_tax_free_pay, ? as ret_ad_pay, ? as ret_tax_free, ? as ret_3mon_sum, ? as ret_day_avg,"
-						+ " ? as name_kor, ? as job, ? as years_service, ? as days_service"
-						+ " from dual)");
-		
-		pstmt.setDate(1, java.sql.Date.valueOf(hired_date));
-		pstmt.setDate(2, java.sql.Date.valueOf(retired_date));
-		pstmt.setInt(3, emp_no);
-		pstmt.setString(4, ret_calc_type_mid);
-		pstmt.setString(5, ret_calc_type_retire);
-		//pstmt.setDate(6, java.sql.Date.valueOf(ret_other_date)); // 기타과세소득지급일
-		pstmt.setString(6, ret_other_name);
-		pstmt.setString(7, ret_other_cost);
-		pstmt.setString(8, ret_prize); // 
-		pstmt.setString(9, ret_notice); // 
-		pstmt.setString(10, ret_tax_free_pay); // 
-		pstmt.setString(11, ret_ad_pay); // 
-		pstmt.setString(12, ret_tax_free); // 
-		pstmt.setString(13, ret_3mon_sum); // 
-		pstmt.setString(14, ret_day_avg); // 
-		pstmt.setString(15, name_kor); // 
-		pstmt.setString(16, job); // 
-		pstmt.setString(17, years_service); // 
-		pstmt.setString(18, days_service); // 
+								+ " ret_other_name, ret_other_cost, ret_prize, ret_notice,"
+								+ " ret_tax_free_pay, ret_ad_pay, ret_tax_free, ret_3mon_sum, ret_day_avg,"
+								+ " name_kor, job, years_service, days_service"
+								+ " from (select ? as hired_date, ? as retired_date, ? as emp_no, ? as ret_calc_type_mid, ? as ret_calc_type_retire,"
+								+ " ? as ret_other_name, ? as ret_other_cost, ? as ret_prize, ? as ret_notice,"
+								+ " ? as ret_tax_free_pay, ? as ret_ad_pay, ? as ret_tax_free, ? as ret_3mon_sum, ? as ret_day_avg,"
+								+ " ? as name_kor, ? as job, ? as years_service, ? as days_service" + " from dual)");
 
-		rs = pstmt.executeQuery();
+				pstmt.setDate(1, java.sql.Date.valueOf(hired_date));
+				pstmt.setDate(2, java.sql.Date.valueOf(retired_date));
+				pstmt.setInt(3, emp_no);
+				pstmt.setString(4, ret_calc_type_mid);
+				pstmt.setString(5, ret_calc_type_retire);
+				// pstmt.setDate(6, java.sql.Date.valueOf(ret_other_date)); // 기타과세소득지급일
+				pstmt.setString(6, ret_other_name);
+				pstmt.setString(7, ret_other_cost);
+				pstmt.setString(8, ret_prize); //
+				pstmt.setString(9, ret_notice); //
+				pstmt.setString(10, ret_tax_free_pay); //
+				pstmt.setString(11, ret_ad_pay); //
+				pstmt.setString(12, ret_tax_free); //
+				pstmt.setString(13, ret_3mon_sum); //
+				pstmt.setString(14, ret_day_avg); //
+				pstmt.setString(15, name_kor); //
+				pstmt.setString(16, job); //
+				pstmt.setString(17, years_service); //
+				pstmt.setString(18, days_service); //
 
-		while (rs.next()) {
+				rs = pstmt.executeQuery();
 
-			rpr = new RetirePayRequest(//
-					rs.getInt("emp_no"),		//
-					rs.getString("ret_calc_type_mid"),//
-					rs.getString("ret_calc_type_retire"),//
-					null,		//emp_type 정규직
-					rs.getString("name_kor"),	//
-					rs.getString("job"),		//
-					null,		//dept
-					null,		//state
-					rs.getDate("hired_date"),	//
-					rs.getDate("retired_date"),//
-					rs.getInt("years_service"),//
-					rs.getInt("days_service"), //
-					null,//
-					rs.getString("ret_other_name"),//
-					rs.getInt("ret_other_cost"),//
-					rs.getInt("ret_prize"), //
-					rs.getInt("ret_notice"),//
-					rs.getInt("ret_tax_free_pay"),//비과세퇴직급여 
-					rs.getInt("ret_ad_pay"),//기납부세액
-					rs.getInt("ret_tax_free"),//새엑공제
-					rs.getInt("ret_3mon_sum"),//3개월총계
-					rs.getInt("ret_day_avg"),//1일평균임금
-					rs.getInt("ret_3mon_sum")*3,//퇴직소득
-					getYearFromDate(conn, rs.getDate("retired_date")), //퇴직일과세연도
-					rs.getInt("ret_3mon_sum")*3/202, // 산출세액
-					rs.getInt("ret_3mon_sum")*3/100, // 퇴직소득세
-					rs.getInt("ret_3mon_sum")*3/1005, // 지방소득세
-					rs.getInt("ret_3mon_sum")*3*Integer.parseInt(years_service)+rs.getInt("ret_prize")+rs.getInt("ret_notice")-rs.getInt("ret_tax_free_pay")-rs.getInt("ret_ad_pay")-rs.getInt("ret_tax_free")+rs.getInt("ret_other_cost")/40-rs.getInt("ret_3mon_sum")*3/100-rs.getInt("ret_3mon_sum")*3/1005, // 실수령액
-					null,//지급방법
-					null//지급일
+				while (rs.next()) {
+
+					rpr = new RetirePayRequest(//
+							rs.getInt("emp_no"), //
+							rs.getString("ret_calc_type_mid"), //
+							rs.getString("ret_calc_type_retire"), //
+							null, // emp_type 정규직
+							rs.getString("name_kor"), //
+							rs.getString("job"), //
+							null, // dept
+							null, // state
+							rs.getDate("hired_date"), //
+							rs.getDate("retired_date"), //
+							rs.getInt("years_service"), //
+							rs.getInt("days_service"), //
+							null, //
+							rs.getString("ret_other_name"), //
+							rs.getInt("ret_other_cost"), //
+							rs.getInt("ret_prize"), //
+							rs.getInt("ret_notice"), //
+							rs.getInt("ret_tax_free_pay"), // 비과세퇴직급여
+							rs.getInt("ret_ad_pay"), // 기납부세액
+							rs.getInt("ret_tax_free"), // 새엑공제
+							rs.getInt("ret_3mon_sum"), // 3개월총계
+							rs.getInt("ret_day_avg"), // 1일평균임금
+							rs.getInt("ret_3mon_sum") * 3, // 퇴직소득
+							getYearFromDate(conn, rs.getDate("retired_date")), // 퇴직일과세연도
+							rs.getInt("ret_3mon_sum") * 3 / 202, // 산출세액
+							rs.getInt("ret_3mon_sum") * 3 / 100, // 퇴직소득세
+							rs.getInt("ret_3mon_sum") * 3 / 1005, // 지방소득세
+							rs.getInt("ret_3mon_sum") * 3 * Integer.parseInt(years_service) + rs.getInt("ret_prize")
+									+ rs.getInt("ret_notice") - rs.getInt("ret_tax_free_pay") - rs.getInt("ret_ad_pay")
+									- rs.getInt("ret_tax_free") + rs.getInt("ret_other_cost") / 40
+									- rs.getInt("ret_3mon_sum") * 3 / 100 - rs.getInt("ret_3mon_sum") * 3 / 1005, // 실수령액
+							null, // 지급방법
+							null// 지급일
 					);
-			
-			
-		}
-		
-		
-		JdbcUtil.close(pstmt);
-		return rpr;
+
+				}
+
+				JdbcUtil.close(pstmt);
+				return rpr;
 			} else {
 
 				pstmt = conn.prepareStatement(
-								"select hired_date, retired_date, emp_no, ret_calc_type_mid, ret_calc_type_retire,"
+						"select hired_date, retired_date, emp_no, ret_calc_type_mid, ret_calc_type_retire,"
 								+ " ret_other_date, ret_other_name, ret_other_cost, ret_prize, ret_notice,"
 								+ " ret_tax_free_pay, ret_ad_pay, ret_tax_free, ret_3mon_sum, ret_day_avg,"
 								+ " name_kor, job, years_service, days_service"
 								+ " from (select ? as hired_date, ? as retired_date, ? as emp_no, ? as ret_calc_type_mid, ? as ret_calc_type_retire,"
 								+ " ? as ret_other_date, ? as ret_other_name, ? as ret_other_cost, ? as ret_prize, ? as ret_notice,"
 								+ " ? as ret_tax_free_pay, ? as ret_ad_pay, ? as ret_tax_free, ? as ret_3mon_sum, ? as ret_day_avg,"
-								+ " ? as name_kor, ? as job, ? as years_service, ? as days_service"
-								+ " from dual)");
-				
+								+ " ? as name_kor, ? as job, ? as years_service, ? as days_service" + " from dual)");
+
 				pstmt.setDate(1, java.sql.Date.valueOf(hired_date));
 				pstmt.setDate(2, java.sql.Date.valueOf(retired_date));
 				pstmt.setInt(3, emp_no);
@@ -444,69 +442,212 @@ public class RetirePayDao {
 				pstmt.setDate(6, java.sql.Date.valueOf(ret_other_date)); // 기타과세소득지급일
 				pstmt.setString(7, ret_other_name);
 				pstmt.setString(8, ret_other_cost);
-				pstmt.setString(9, ret_prize); // 
-				pstmt.setString(10, ret_notice); // 
-				pstmt.setString(11, ret_tax_free_pay); // 
-				pstmt.setString(12, ret_ad_pay); // 
-				pstmt.setString(13, ret_tax_free); // 
-				pstmt.setString(14, ret_3mon_sum); // 
-				pstmt.setString(15, ret_day_avg); // 
-				pstmt.setString(16, name_kor); // 
-				pstmt.setString(17, job); // 
-				pstmt.setString(18, years_service); // 
-				pstmt.setString(19, days_service); // 
+				pstmt.setString(9, ret_prize); //
+				pstmt.setString(10, ret_notice); //
+				pstmt.setString(11, ret_tax_free_pay); //
+				pstmt.setString(12, ret_ad_pay); //
+				pstmt.setString(13, ret_tax_free); //
+				pstmt.setString(14, ret_3mon_sum); //
+				pstmt.setString(15, ret_day_avg); //
+				pstmt.setString(16, name_kor); //
+				pstmt.setString(17, job); //
+				pstmt.setString(18, years_service); //
+				pstmt.setString(19, days_service); //
 
 				rs = pstmt.executeQuery();
 
 				while (rs.next()) {
 
 					rpr = new RetirePayRequest(//
-							rs.getInt("emp_no"),		//
-							rs.getString("ret_calc_type_mid"),//
-							rs.getString("ret_calc_type_retire"),//
-							null,		//emp_type 정규직
-							rs.getString("name_kor"),	//
-							rs.getString("job"),		//
-							null,		//dept
-							null,		//state
-							rs.getDate("hired_date"),	//
-							rs.getDate("retired_date"),//
-							rs.getInt("years_service"),//
+							rs.getInt("emp_no"), //
+							rs.getString("ret_calc_type_mid"), //
+							rs.getString("ret_calc_type_retire"), //
+							null, // emp_type 정규직
+							rs.getString("name_kor"), //
+							rs.getString("job"), //
+							null, // dept
+							null, // state
+							rs.getDate("hired_date"), //
+							rs.getDate("retired_date"), //
+							rs.getInt("years_service"), //
 							rs.getInt("days_service"), //
-							rs.getDate("ret_other_date"),//
-							rs.getString("ret_other_name"),//
-							rs.getInt("ret_other_cost"),//
+							rs.getDate("ret_other_date"), //
+							rs.getString("ret_other_name"), //
+							rs.getInt("ret_other_cost"), //
 							rs.getInt("ret_prize"), //
-							rs.getInt("ret_notice"),//
-							rs.getInt("ret_tax_free_pay"),//비과세퇴직급여
-							rs.getInt("ret_ad_pay"),//기납부세액
-							rs.getInt("ret_tax_free"),//새엑공제
-							rs.getInt("ret_3mon_sum"),//3개월총계
-							rs.getInt("ret_day_avg"),//1일평균임금
-							rs.getInt("ret_3mon_sum")*3,//퇴직소득
-							getYearFromDate(conn, rs.getDate("retired_date")), //퇴직일과세연도
-							rs.getInt("ret_3mon_sum")*3/202, // 산출세액
-							rs.getInt("ret_3mon_sum")*3/100, // 퇴직소득세
-							rs.getInt("ret_3mon_sum")*3/1005, // 지방소득세
-							rs.getInt("ret_3mon_sum")*3*Integer.parseInt(years_service)+rs.getInt("ret_prize")+rs.getInt("ret_notice")-rs.getInt("ret_tax_free_pay")-rs.getInt("ret_ad_pay")-rs.getInt("ret_tax_free")+rs.getInt("ret_other_cost")/40-rs.getInt("ret_3mon_sum")*3/100-rs.getInt("ret_3mon_sum")*3/1005, // 실수령액
-							null,//지급방법
-							null//지급일
-							);
+							rs.getInt("ret_notice"), //
+							rs.getInt("ret_tax_free_pay"), // 비과세퇴직급여
+							rs.getInt("ret_ad_pay"), // 기납부세액
+							rs.getInt("ret_tax_free"), // 새엑공제
+							rs.getInt("ret_3mon_sum"), // 3개월총계
+							rs.getInt("ret_day_avg"), // 1일평균임금
+							rs.getInt("ret_3mon_sum") * 3, // 퇴직소득
+							getYearFromDate(conn, rs.getDate("retired_date")), // 퇴직일과세연도
+							rs.getInt("ret_3mon_sum") * 3 / 202, // 산출세액
+							rs.getInt("ret_3mon_sum") * 3 / 100, // 퇴직소득세
+							rs.getInt("ret_3mon_sum") * 3 / 1005, // 지방소득세
+							rs.getInt("ret_3mon_sum") * 3 * Integer.parseInt(years_service) + rs.getInt("ret_prize")
+									+ rs.getInt("ret_notice") - rs.getInt("ret_tax_free_pay") - rs.getInt("ret_ad_pay")
+									- rs.getInt("ret_tax_free") + rs.getInt("ret_other_cost") / 40
+									- rs.getInt("ret_3mon_sum") * 3 / 100 - rs.getInt("ret_3mon_sum") * 3 / 1005, // 실수령액
+							null, // 지급방법
+							null// 지급일
+					);
 				}
-				
-				
+
 				JdbcUtil.close(pstmt);
 				return rpr;
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 		return null;
 	}
 
-	// 퇴직금 계산하기 버튼 클릭 시 delete
-	public void calcRetirepayDelete(Connection conn) {
+	// 저장 버튼 클릭 시 insert
+	public void retirepayInsert(Connection conn, HttpServletRequest req) {
+
+
+		// 입사일
+		String hired_date = req.getParameter("hired_date");
+		// 퇴직일
+		String retired_date = req.getParameter("retired_date");
+
+//여기서부터 퇴직급여 테이블
+		// 사원번호
+		int emp_no = Integer.parseInt(req.getParameter("emp_no"));
+
+		String ret_calc_type = req.getParameter("ret_calc_type");
+		String ret_calc_type_mid = (String) ((ret_calc_type.equals("중간정산")) ? "중간정산" : null);
+		String ret_calc_type_retire = (String) ((ret_calc_type.equals("퇴직정산")) ? "퇴직정산" : null);
+
+		// 기타과세소득지급일
+		String ret_other_date = req.getParameter("ret_other_date");
+
+		// 기타과세소득 지급항목
+		String ret_other_name = req.getParameter("ret_other_name");
+
+		// 기타과세소득 금액
+		String ret_other_cost = req.getParameter("ret_other_cost");
+
+		String ret_prize = req.getParameter("ret_prize");
+
+		String ret_notice = req.getParameter("ret_notice");
+
+		String ret_tax_free_pay = req.getParameter("ret_tax_free_pay");
+
+		String ret_ad_pay = req.getParameter("ret_ad_pay");
+		// 세액공제
+		String ret_tax_free = req.getParameter("ret_tax_free");
+
+		String ret_3mon_sum = req.getParameter("ret_3mon_sum");
+
+		String ret_day_avg = req.getParameter("ret_day_avg");
+		
+		String ret_pay = req.getParameter("ret_pay");
+		
+		String ret_year = req.getParameter("ret_year");
+		
+		String ret_tax = req.getParameter("ret_tax");
+		
+		String ret_income_tax = req.getParameter("ret_income_tax");
+		
+		String ret_local_tax = req.getParameter("ret_local_tax");
+		
+		String ret_realpay = req.getParameter("ret_realpay");
+		
+		String how_to_pay = req.getParameter("how_to_pay");
+		
+		String ret_payday = req.getParameter("ret_payday");
+
+
+		try {
+			PreparedStatement pstmt = null;
+
+			if (ret_other_date.equals(null) || ret_other_date.isEmpty()) {
+
+				System.out.println("null일때");
+				pstmt = conn.prepareStatement(
+						"insert into retire_payment (emp_no, ret_calc_type_mid, ret_calc_type_retire, ret_other_date, ret_other_name,"
+								+ " ret_other_cost, ret_prize, ret_notice, ret_tax_free_pay, ret_ad_pay,"
+								+ " ret_tax_free, ret_3mon_sum, ret_day_avg, ret_pay, ret_year,"
+								+ " ret_tax, ret_income_tax, ret_local_tax, ret_realpay, how_to_pay,"
+								+ " ret_payday)"
+								+ " values (?, ?, ?, ?, ?,"
+								+ " ?, ?, ?, ?, ?,"
+								+ " ?, ?, ?, ?, ?,"
+								+ " ?, ?, ?, ?, ?,"
+								+ " ?)");
+
+				pstmt.setInt(1, emp_no);
+				pstmt.setString(2, ret_calc_type_mid);
+				pstmt.setString(3, ret_calc_type_retire);
+			    pstmt.setString(4, null); // 기타과세소득지급일
+				pstmt.setString(5, ret_other_name);
+				pstmt.setString(6, ret_other_cost);
+				pstmt.setString(7, ret_prize); //
+				pstmt.setString(8, ret_notice); //
+				pstmt.setString(9, ret_tax_free_pay); //
+				pstmt.setString(10, ret_ad_pay); //
+				pstmt.setString(11, ret_tax_free); //
+				pstmt.setString(12, ret_3mon_sum); //
+				pstmt.setString(13, ret_day_avg); //
+				pstmt.setString(14, ret_pay);// 퇴직소득
+				pstmt.setString(15, ret_year); //
+				pstmt.setString(16, ret_tax); //
+				pstmt.setInt(17, Integer.parseInt(ret_income_tax)); //
+				pstmt.setString(18, ret_local_tax); //
+				pstmt.setString(19, ret_realpay); //
+				pstmt.setString(20, how_to_pay); //
+				pstmt.setDate(21, java.sql.Date.valueOf(ret_payday)); //
+				
+				pstmt.executeUpdate();
+				
+				JdbcUtil.close(pstmt);
+			} else {
+
+				pstmt = conn.prepareStatement(
+						"insert into retire_payment (emp_no, ret_calc_type_mid, ret_calc_type_retire, ret_other_date, ret_other_name,"
+								+ " ret_other_cost, ret_prize, ret_notice, ret_tax_free_pay, ret_ad_pay,"
+								+ " ret_tax_free, ret_3mon_sum, ret_day_avg, ret_pay, ret_year,"
+								+ " ret_tax, ret_income_tax, ret_local_tax, ret_realpay, how_to_pay,"
+								+ " ret_payday)"
+								+ " values (?, ?, ?, ?, ?,"
+								+ " ?, ?, ?, ?, ?,"
+								+ " ?, ?, ?, ?, ?,"
+								+ " ?, ?, ?, ?, ?,"
+								+ " ?)");
+
+				pstmt.setInt(1, emp_no);
+				pstmt.setString(2, ret_calc_type_mid);
+				pstmt.setString(3, ret_calc_type_retire);
+			    pstmt.setDate(4, java.sql.Date.valueOf(ret_other_date)); // 기타과세소득지급일
+				pstmt.setString(5, ret_other_name);
+				pstmt.setString(6, ret_other_cost);
+				pstmt.setString(7, ret_prize); //
+				pstmt.setString(8, ret_notice); //
+				pstmt.setString(9, ret_tax_free_pay); //
+				pstmt.setString(10, ret_ad_pay); //
+				pstmt.setString(11, ret_tax_free); //
+				pstmt.setString(12, ret_3mon_sum); //
+				pstmt.setString(13, ret_day_avg); //
+				pstmt.setString(14, ret_pay);// 퇴직소득
+				pstmt.setString(15, ret_year); //
+				pstmt.setString(16, ret_tax); //
+				pstmt.setInt(17, Integer.parseInt(ret_income_tax)); //
+				pstmt.setString(18, ret_local_tax); //
+				pstmt.setString(19, ret_realpay); //
+				pstmt.setString(20, how_to_pay); //
+				pstmt.setDate(21, java.sql.Date.valueOf(ret_payday)); //
+				
+				pstmt.executeUpdate();
+				JdbcUtil.close(pstmt);
+			}
+
+		} catch (Exception e) {
+		}
 
 	}
+
+	
 
 }
