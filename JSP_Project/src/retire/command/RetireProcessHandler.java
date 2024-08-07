@@ -26,7 +26,7 @@ public class RetireProcessHandler implements CommandHandler {
 			return processSubmit(req, res);
 		} else {
 			res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-			return null;
+			return FORM_VIEW;
 		}
 	}
 

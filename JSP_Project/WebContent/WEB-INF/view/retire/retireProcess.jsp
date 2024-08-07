@@ -93,7 +93,7 @@
 										<td align="center"><strong>퇴직정산</strong></td>
 									</tr>
 									<c:forEach var="n" items="${list}" begin="0" end="13" varStatus="st">
-										<tr class="btn-open-modal" data-state="${n.state}" data-emp_no="${n.emp_no}" data-name="${n.name_kor}" data-dept="${n.dept}" data-job="${n.job}" data-hired_date="${n.hired_date}"  data-years_service="${n.years_service}" data-ret_calc_type_mid="${n.ret_calc_type_mid}" data-ret_calc_type_retire="${n.ret_calc_type_retire}"  data-retired_date="${n.retired_date}" data-retire_reason="${n.retire_reason}" data-retire_phone="${n.retire_phone}">
+										<tr class="btn-open-modal" data-state="${n.state}" data-emp_no="${n.emp_no}" data-name="${n.name_kor}" data-dept="${n.dept}" data-job="${n.job}" data-hired_date="${n.hired_date}"  data-years_service="${n.years_service}" data-ret_calc_type_mid="${n.ret_calc_type_mid}" data-ret_calc_type_retire="${n.ret_calc_type_retire}"  data-retire_type="${n.retire_type}" data-retired_date="${n.retired_date}" data-retire_reason="${n.retire_reason}" data-retire_phone="${n.retire_phone}">
 											<td align="center">${st.index+1}</td>
 											<td align="center">
 												<c:if test="${n.state eq '재직'}">${n.state}</c:if>
@@ -137,13 +137,13 @@
 					<table border="1">
 						<tr>
 							<td>대상 사원</td>
-							<td><input type="text" name="retire_emp_name" id="modal_retire_emp_name" value="" readonly/></td>
+							<td><input type="text" name="retire_emp_name" id="modal_retire_emp_name" value="" readonly required/></td>
 						</tr>
 						<tr>
 							<td>퇴직구분</td>
 							<td>
-								<select id="modal_retirement_type" name="retirement_type">
-									<option selected>선택</option>
+								<select id="modal_retirement_type" name="retirement_type" required>
+									<option value="" selected>선택</option>
 									<option value="정년퇴직">정년퇴직</option>
 									<option value="정리해고">정리해고</option>
 									<option value="자발적 퇴직">자발적 퇴직</option>
@@ -155,18 +155,18 @@
 						</tr>
 						<tr>
 							<td>퇴직일자</td>
-							<td><input type="date" id="modal_retirement_date" name="retirement_date" /></td>
+							<td><input type="date" id="modal_retirement_date" name="retirement_date" required /></td>
 						</tr>
 						<tr>
 							<td>퇴직사유</td>
-							<td><input type="text" id="modal_retire_reason" name="retire_reason" /></td>
+							<td><input type="text" id="modal_retire_reason" name="retire_reason" required /></td>
 						</tr>
 						<tr>
 							<td>퇴직 후 연락처</td>
-							<td><input type="text" id="modal_retire_phone" name="retire_phone" /></td>
+							<td><input type="text" id="modal_retire_phone" name="retire_phone" required/></td>
 						</tr>
 						<tr>
-							<td colspan="2" align="center"><input type="submit" name="modalButton" value="저장" /></td>
+							<td colspan="2" align="center"><input type="submit" name="modalButton" value="저장" />&nbsp;<input type="reset" value="초기화" /></td>
 						</tr>
 					</table>
 				</form>
@@ -223,14 +223,14 @@
                 if (modal === retireModal) {
                     modal.querySelector('#modal_retire_emp_name').value = data.name || '';
                     modal.querySelector('#modal_emp_no').value = data.emp_no || '';
-                    modal.querySelector('#modal_retirement_type').value = ""; // Default or pre-filled value
+                    //modal.querySelector('#modal_retirement_type').value = ""; // Default or pre-filled value
                     modal.querySelector('#modal_retirement_date').value = "";
                     modal.querySelector('#modal_retire_reason').value = ""; // Default or pre-filled value
                     modal.querySelector('#modal_retire_phone').value = ""; // Default or pre-filled value
                 } else if (modal === retireCancelModal) {
                     modal.querySelector('#cancel_modal_emp_name').value = data.name || '';
                     modal.querySelector('#cancel_modal_emp_no').value = data.emp_no || '';
-                    modal.querySelector('#cancel_modal_retirement_type').value = data.retire_type || '';
+                    modal.querySelector('#cancel_modal_retirement_type').value = data.retire_type;
                     modal.querySelector('#cancel_modal_retirement_date').value = data.retired_date || '';
                     modal.querySelector('#cancel_modal_retire_reason').value = data.retire_reason || ''; // Default or pre-filled value
                     modal.querySelector('#cancel_modal_retire_phone').value = data.retire_phone || ''; // Default or pre-filled value

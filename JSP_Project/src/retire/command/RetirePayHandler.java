@@ -30,8 +30,7 @@ public class RetirePayHandler implements CommandHandler {
 		List<RetirePayRequest> list = retirePayService.selectAll();
 		req.setAttribute("list", list);
 		
-		req.getRequestDispatcher(FORM_VIEW).forward(req, res);
-		return null;
+		return FORM_VIEW;
 
 		
 	}

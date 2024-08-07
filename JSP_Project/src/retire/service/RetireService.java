@@ -88,6 +88,7 @@ public class RetireService {
 			retireDao.oneMemberRetireDelete(conn, omrr);
 			retireDao.deleteRetireDateToEmployeeTable(conn, omrr);
 
+			
 			conn.commit();
 		} catch (SQLException e) {
 			JdbcUtil.rollback(conn);
