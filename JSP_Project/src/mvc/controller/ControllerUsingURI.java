@@ -25,6 +25,14 @@ public class ControllerUsingURI extends HttpServlet {
 		// > configFile에는 /WEB-INF/commandHandler.properties 라는 경로가 들어있음
 		Properties prop = new Properties();		//Properties는 Map과달리 <문자열,문자열>로 이루어진 컬렉션!
 		String configFilePath = getServletContext().getRealPath(configFile); // configFile이 지정한 프로젝트의 실제경로를 찾겠다.
+		
+		
+		
+		 getServletContext().setAttribute("message", "controllerUsingURI에 있어요?");   //<--
+		
+		
+		
+		
 		try(FileReader fr = new FileReader(configFilePath)){ //실제경로(configFilePath)의 파일을 읽음
 			prop.load(fr);		//fr =  hello=mvc.hello.HelloHandler
 		}catch(IOException e) {

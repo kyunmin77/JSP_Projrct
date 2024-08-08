@@ -98,10 +98,4 @@ public class RetireService {
 		}
 	}
 	
-	
-	//퇴직금 계산하기 버튼 클릭 시
-	public void calcRetirepay() {
-		
-	}
-
 }

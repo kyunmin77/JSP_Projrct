@@ -66,6 +66,7 @@ public class RetirePaymentHandler implements CommandHandler {
 			RetirePayRequest rpr = retirePayService.selectOne(emp_no);
 			req.setAttribute("rpr", rpr);
 
+//			retirePayService.updateRealPay(req);
 
 			req.getRequestDispatcher(FORM_VIEW).forward(req, res);
 		} else if (button.equals("취소")) {

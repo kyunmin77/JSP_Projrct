@@ -119,4 +119,18 @@ public class RetirePayService {
 		}
 	}
 	
+	
+//	//퇴직 테이블에 퇴직금 업데이트 하기
+//	public void updateRealPay(HttpServletRequest req) {
+//		try {
+//			conn = ConnectionProvider.getConnection();
+//			retirePayDao.updateRealPay(conn, Integer.parseInt(req.getParameter("emp_no"))); 
+//			
+//		} catch (SQLException e) {
+//			JdbcUtil.rollback(conn);
+//			throw new RuntimeException(e);
+//		} finally {
+//			JdbcUtil.close(conn);
+//		}
+//	}
 }

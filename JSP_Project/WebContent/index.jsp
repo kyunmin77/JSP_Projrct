@@ -29,8 +29,8 @@
 			</tr>
 			
 		</table>
+		안녕하세요?
 		
-		
-		
+		${message}
 	</body>
 </html>
