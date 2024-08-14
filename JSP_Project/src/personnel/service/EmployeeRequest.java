@@ -8,7 +8,6 @@ public class EmployeeRequest {
 	private String name_kor;
 	private String name_eng;
 	private Date hired_date;
-	private Date retired_date;
 	private String dept;
 	private String job;
 	private String state;
@@ -22,19 +21,18 @@ public class EmployeeRequest {
 	private String sns;
 	private String note;
 	private String bank;
-	private String acoount;
+	private String account;
 	
 	public EmployeeRequest(int emp_no, String emp_type, String name_kor, String name_eng, Date hired_date,
-			Date retired_date, String dept, String job, String state, String nationality, String id_number,
+			String dept, String job, String state, String nationality, String id_number,
 			String post_code, String addr, String home_number, String phone, String email, String sns, String note,
-			String bank, String acoount) {
+			String bank, String account) {
 		super();
 		this.emp_no = emp_no;
 		this.emp_type = emp_type;
 		this.name_kor = name_kor;
 		this.name_eng = name_eng;
 		this.hired_date = hired_date;
-		this.retired_date = retired_date;
 		this.dept = dept;
 		this.job = job;
 		this.state = state;
@@ -48,7 +46,7 @@ public class EmployeeRequest {
 		this.sns = sns;
 		this.note = note;
 		this.bank = bank;
-		this.acoount = acoount;
+		this.account = account;
 	}
 
 	public int getEmp_no() {
@@ -69,10 +67,6 @@ public class EmployeeRequest {
 
 	public Date getHired_date() {
 		return hired_date;
-	}
-
-	public Date getRetired_date() {
-		return retired_date;
 	}
 
 	public String getDept() {
@@ -127,8 +121,8 @@ public class EmployeeRequest {
 		return bank;
 	}
 
-	public String getAcoount() {
-		return acoount;
+	public String getAccount() {
+		return account;
 	}
 	
 	

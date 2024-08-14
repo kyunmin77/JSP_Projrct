@@ -7,5 +7,5 @@
 
 
 <div>
-    <h1>&nbsp;&nbsp;&nbsp;給与管理 プログラム<br/></h1>
+    <a href="index.jsp"><h1>&nbsp;&nbsp;&nbsp;給与管理 プログラム<br/></h1></a>
 </div>

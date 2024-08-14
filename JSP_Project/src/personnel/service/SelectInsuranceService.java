@@ -10,7 +10,7 @@ import personnel.model.Insurance;
 public class SelectInsuranceService {
 	private InsuranceDao insuranceDao = new InsuranceDao();
 	
-	public Insurance select(String emp_no) {
+	public Insurance select(int emp_no) {
 		try(Connection conn = ConnectionProvider.getConnection()) {
 			
 			//해당 bs_num의 객체를 받아옴

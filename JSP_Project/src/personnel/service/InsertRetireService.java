@@ -44,7 +44,7 @@ public class InsertRetireService {
 		return new Retire(
 				req.getEmp_no(),
 				req.getRetire_type(),
-				req.getRetire_date(),
+				req.getRetired_date(),
 				req.getRetire_reason(),
 				req.getRetire_phone(),
 				req.getRetire_cost());

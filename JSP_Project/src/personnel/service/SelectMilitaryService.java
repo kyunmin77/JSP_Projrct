@@ -10,7 +10,7 @@ import personnel.model.Military;
 public class SelectMilitaryService {
 	private MilitaryDao militaryDao = new MilitaryDao();
 	
-	public Military select(String emp_no) {
+	public Military select(int emp_no) {
 		try(Connection conn = ConnectionProvider.getConnection()) {
 			
 			//해당 bs_num의 객체를 받아옴

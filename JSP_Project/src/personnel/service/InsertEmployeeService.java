@@ -47,7 +47,6 @@ public class InsertEmployeeService {
 				req.getName_kor(),
 				req.getName_eng(),
 				req.getHired_date(),
-				req.getRetired_date(),
 				req.getDept(),
 				req.getJob(),
 				req.getState(),
@@ -61,7 +60,7 @@ public class InsertEmployeeService {
 				req.getSns(),
 				req.getNote(),
 				req.getBank(),
-				req.getAcoount());
+				req.getAccount());
 	}
 	
 }

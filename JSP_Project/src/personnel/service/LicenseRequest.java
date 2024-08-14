@@ -1,16 +1,14 @@
 package personnel.service;
 
-import java.sql.Date;
-
 public class LicenseRequest {
 	private int emp_no;
 	private String lsc_name;
-	private Date lsc_date;
+	private String lsc_date;
 	private String lsc_dep;
 	private String lsc_num;
 	private String lsc_note;
 	
-	public LicenseRequest(int emp_no, String lsc_name, Date lsc_date, String lsc_dep, String lsc_num, String lsc_note) {
+	public LicenseRequest(int emp_no, String lsc_name, String lsc_date, String lsc_dep, String lsc_num, String lsc_note) {
 		super();
 		this.emp_no = emp_no;
 		this.lsc_name = lsc_name;
@@ -36,11 +34,11 @@ public class LicenseRequest {
 		this.lsc_name = lsc_name;
 	}
 
-	public Date getLsc_date() {
+	public String getLsc_date() {
 		return lsc_date;
 	}
 
-	public void setLsc_date(Date lsc_date) {
+	public void setLsc_date(String lsc_date) {
 		this.lsc_date = lsc_date;
 	}
 

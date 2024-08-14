@@ -22,4 +22,17 @@ public class SelectCompanyService {
 		}
 	}
 	
+	public String selectLastCpn() {
+		try(Connection conn = ConnectionProvider.getConnection()) {
+			
+			//해당 bs_num의 객체를 받아옴
+		String cnt = companyDao.selectLastCpn(conn);
+			
+		return cnt;
+			
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 }

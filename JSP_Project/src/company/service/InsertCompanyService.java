@@ -3,13 +3,13 @@ package company.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import company.dao.CompanyDao;
 import company.model.Company;
-import company.service.CompanyRequest;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
-import company.dao.CompanyDao;
 
 public class InsertCompanyService {
+	
 	private CompanyDao companyDao = new CompanyDao();
 	
 	public Company insert(CompanyRequest req) {

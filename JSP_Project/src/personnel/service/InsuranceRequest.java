@@ -5,14 +5,11 @@ public class InsuranceRequest {
 	private int emp_no;
 	private String pension;
 	private String insur_heal;
-	private String insur_heal_per;
 	private String insur_care;
-	private String insure_care_per;
 	private String insur_hire;
 	private String gapgeunse;
 	private String wage_earner_per;
 	private String youth_red;
-	private String youth_red_per;
 	private String durunuri;
 	private String salary;
 	private String pension_month;
@@ -33,24 +30,21 @@ public class InsuranceRequest {
 	private String indus_start;
 	private String indus_end;
 	
-	public InsuranceRequest(int emp_no, String pension, String insur_heal, String insur_heal_per, String insur_care,
-			String insure_care_per, String insur_hire, String gapgeunse, String wage_earner_per, String youth_red,
-			String youth_red_per, String durunuri, String salary, String pension_month, String heal_month,
-			String hire_month, String salary_bank, String salary_account, String pension_num, String pension_start,
-			String pension_end, String heal_num, String heal_start, String heal_end, String hire_num, String hire_start,
-			String hire_end, String indus_num, String indus_start, String indus_end) {
+	public InsuranceRequest(int emp_no, String pension, String insur_heal, String insur_care, String insur_hire,
+			String gapgeunse, String wage_earner_per, String youth_red, String durunuri, String salary,
+			String pension_month, String heal_month, String hire_month, String salary_bank, String salary_account,
+			String pension_num, String pension_start, String pension_end, String heal_num, String heal_start,
+			String heal_end, String hire_num, String hire_start, String hire_end, String indus_num, String indus_start,
+			String indus_end) {
 		super();
 		this.emp_no = emp_no;
 		this.pension = pension;
 		this.insur_heal = insur_heal;
-		this.insur_heal_per = insur_heal_per;
 		this.insur_care = insur_care;
-		this.insure_care_per = insure_care_per;
 		this.insur_hire = insur_hire;
 		this.gapgeunse = gapgeunse;
 		this.wage_earner_per = wage_earner_per;
 		this.youth_red = youth_red;
-		this.youth_red_per = youth_red_per;
 		this.durunuri = durunuri;
 		this.salary = salary;
 		this.pension_month = pension_month;
@@ -71,6 +65,7 @@ public class InsuranceRequest {
 		this.indus_start = indus_start;
 		this.indus_end = indus_end;
 	}
+	
 	public int getEmp_no() {
 		return emp_no;
 	}
@@ -89,23 +84,11 @@ public class InsuranceRequest {
 	public void setInsur_heal(String insur_heal) {
 		this.insur_heal = insur_heal;
 	}
-	public String getInsur_heal_per() {
-		return insur_heal_per;
-	}
-	public void setInsur_heal_per(String insur_heal_per) {
-		this.insur_heal_per = insur_heal_per;
-	}
 	public String getInsur_care() {
 		return insur_care;
 	}
 	public void setInsur_care(String insur_care) {
 		this.insur_care = insur_care;
-	}
-	public String getInsure_care_per() {
-		return insure_care_per;
-	}
-	public void setInsure_care_per(String insure_care_per) {
-		this.insure_care_per = insure_care_per;
 	}
 	public String getInsur_hire() {
 		return insur_hire;
@@ -130,12 +113,6 @@ public class InsuranceRequest {
 	}
 	public void setYouth_red(String youth_red) {
 		this.youth_red = youth_red;
-	}
-	public String getYouth_red_per() {
-		return youth_red_per;
-	}
-	public void setYouth_red_per(String youth_red_per) {
-		this.youth_red_per = youth_red_per;
 	}
 	public String getDurunuri() {
 		return durunuri;
@@ -252,5 +229,5 @@ public class InsuranceRequest {
 		this.indus_end = indus_end;
 	}
 	
-
+	
 }

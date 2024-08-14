@@ -5,16 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 
 import attvac_items.model.Attend_items;
-import attvac_items.model.Vacation_items;
 import jdbc.JdbcUtil;
-import personnel.model.Appointment;
-import personnel.model.Reward;
 
 public class Attend_itemsDao {
 	
@@ -23,14 +18,15 @@ public class Attend_itemsDao {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
+			
 			pstmt = conn.prepareStatement("insert into attend_items values(?,?,?,?,?,?)");
 			pstmt.setString(1, att.getAtt_name());
-			pstmt.setDate(2, att.getAtt_unit());
+			pstmt.setString(2, att.getAtt_unit());
 			pstmt.setString(3, att.getAtt_grp());
 			pstmt.setString(4, att.getAtt_deduction());
 			pstmt.setString(5, att.getAtt_conn());
 			pstmt.setString(6, att.getAtt_used());
-						
+		
 			int insertedCount = pstmt.executeUpdate();
 			
 			if(insertedCount>0) {
@@ -39,7 +35,6 @@ public class Attend_itemsDao {
 				if(rs.next()) {
 					
 					String newNum = rs.getString(1);
-					
 					return new Attend_items(newNum, 
 							att.getAtt_unit(),
 							att.getAtt_grp(),
@@ -75,27 +70,52 @@ public class Attend_itemsDao {
 	      }
 	   }
 	
-	public List<Attend_items> selectAll(Connection conn) throws SQLException {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = conn.prepareStatement("SELECT * FROM attend_items");
-            rs = pstmt.executeQuery();
-            List<Attend_items> result = new ArrayList<>();
-            while (rs.next()) {
-                result.add(convertAttend_items(rs));
-            }
-            return result;
-        } finally {
-            JdbcUtil.close(rs);
-            JdbcUtil.close(pstmt);
-        }
-    }
+	 public List<Attend_items> selectAll(Connection conn) throws SQLException {
+	        PreparedStatement pstmt = null;
+	        ResultSet rs = null;
+	        try {
+	            pstmt = conn.prepareStatement("SELECT * FROM attend_items");
+	            rs = pstmt.executeQuery();
+	            List<Attend_items> result = new ArrayList<>();
+	            while (rs.next()) {
+	                result.add(convertAttend_items(rs));
+	            }
+	            return result;
+	        } finally {
+	            JdbcUtil.close(rs);
+	            JdbcUtil.close(pstmt);
+	        }
+	    }
+	 
+	 public void delete (Connection conn, String name) throws SQLException{
+			try(PreparedStatement pstmt = conn.prepareStatement(
+					"delete from attend_items where att_name =?")){
+				pstmt.setString(1, name);
+				pstmt.executeUpdate();
+			}
+		}
+	 
+	 //근태항목 수정
+	 public int update (Connection conn, String before_name, Attend_items att) throws SQLException{
+			try(PreparedStatement pstmt = conn.prepareStatement(
+					"update attend_items set att_name=?, att_unit=?, att_grp=?, att_deduction =?, att_conn =?, att_used=? where att_name =?")){
+				
+				pstmt.setString(1, att.getAtt_name());
+				pstmt.setString(2, att.getAtt_unit());
+				pstmt.setString(3, att.getAtt_grp());
+				pstmt.setString(4, att.getAtt_deduction());
+				pstmt.setString(5, att.getAtt_conn());
+				pstmt.setString(6, att.getAtt_used());
+				pstmt.setString(7, before_name);
+				
+				return pstmt.executeUpdate();
+			}
+		}
 	
 	private Attend_items convertAttend_items(ResultSet rs) throws SQLException {
 		return new Attend_items(
 				rs.getString("att_name"),        
-                rs.getDate("appo_date"),
+                rs.getString("att_unit"),
                 rs.getString("att_grp"),
                 rs.getString("att_deduction"),
                 rs.getString("att_conn"),

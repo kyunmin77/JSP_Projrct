@@ -5,21 +5,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.sql.Date;
 
 import company.model.Company;
 import jdbc.JdbcUtil;
-import company.model.Company;
 
 public class CompanyDao {
+	
 	public Company selectByBsNo(Connection conn, String bs_num)
 			throws SQLException{ //해당아이디를 가진 company형 객체를 반환하는 매서드
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("select * from company where bs_num = ?");
+			pstmt = conn.prepareStatement("select * from company where cp_name = ?");
 			pstmt.setString(1, bs_num);				// 쿼리문 만들고 ?에 값 대입
 			rs = pstmt.executeQuery();			// rs에 쿼리문 실행결과를 저장
 			Company company = null;
@@ -52,6 +50,24 @@ public class CompanyDao {
 			JdbcUtil.close(pstmt);
 		}
 	}
+	
+	public String selectLastCpn(Connection conn) throws SQLException {
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM( SELECT cp_name "
+            		+ "FROM company ORDER BY ROWNUM DESC )WHERE ROWNUM = 1");
+	
+			if(rs.next()) {
+                return rs.getString(1);
+            }
+            return null;
+        } finally {
+            JdbcUtil.close(rs);
+            JdbcUtil.close(stmt);
+        }
+    }
 	
 	public Company insert(Connection conn, Company cpn) throws SQLException{
 		PreparedStatement pstmt = null;
@@ -135,13 +151,5 @@ public class CompanyDao {
 		}
 	}
 	
-	/*
-	 * public void update(Connection conn, Company cpn) throws SQLException{
-	 * //Company 객체의 이름과 비밀번호를 수정하는 매서드 try(PreparedStatement pstmt =
-	 * conn.prepareStatement(
-	 * "update member set name = ?, password = ? where memberid = ?")){
-	 * pstmt.setString(1, member.getName()); pstmt.setString(2,
-	 * member.getPassword()); pstmt.setString(3, member.getId());
-	 * pstmt.executeUpdate(); } }
-	 */
+
 }

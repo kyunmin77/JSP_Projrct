@@ -2,8 +2,11 @@ package mvc.controller;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -13,11 +16,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import company.model.Company;
+import company.service.InsertCompanyService;
+import company.service.SelectCompanyService;
 import mvc.command.CommandHandler;
 import mvc.command.NullHandler;
+import personnel.model.Employee;
+import personnel.service.SelectEmployeeService;
 
 public class ControllerUsingURI extends HttpServlet {
 	private Map<String, CommandHandler> commandHandlerMap = new HashMap<>();
+	private InsertCompanyService insertService = new InsertCompanyService();
+	private SelectCompanyService selectService = new SelectCompanyService();
+	private SelectEmployeeService selectEmpService = new SelectEmployeeService();
+
 	// Map형 <키:스트링, 값:CommandHandler>
 	
 	public void init() throws ServletException{
@@ -25,6 +37,30 @@ public class ControllerUsingURI extends HttpServlet {
 		// > configFile에는 /WEB-INF/commandHandler.properties 라는 경로가 들어있음
 		Properties prop = new Properties();		//Properties는 Map과달리 <문자열,문자열>로 이루어진 컬렉션!
 		String configFilePath = getServletContext().getRealPath(configFile); // configFile이 지정한 프로젝트의 실제경로를 찾겠다.
+	
+		//
+		SimpleDateFormat fdate = new SimpleDateFormat("yyyy.MM.dd");
+		
+		String cpn_name = selectService.selectLastCpn();
+		Company company = selectService.select(cpn_name);
+		Employee emp = selectEmpService.select(1);
+		List<Employee> emp_list = selectEmpService.selectAll();
+
+		Date date = new Date();
+		String sDate = fdate.format(date);
+		getServletContext().setAttribute("date", sDate);
+		
+		
+		if (company != null) {
+			getServletContext().setAttribute("company", company);
+		}
+		if (emp != null) {
+			getServletContext().setAttribute("emp", emp);
+			getServletContext().setAttribute("emp_list", emp_list);
+			
+		}
+		
+		
 		try(FileReader fr = new FileReader(configFilePath)){ //실제경로(configFilePath)의 파일을 읽음
 			prop.load(fr);		//fr =  hello=mvc.hello.HelloHandler
 		}catch(IOException e) {

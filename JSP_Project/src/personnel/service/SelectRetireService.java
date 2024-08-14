@@ -10,11 +10,11 @@ import personnel.model.Retire;
 public class SelectRetireService {
 	private RetireDao retireDao = new RetireDao();
 	
-	public Retire select(String emp_no) {
+	public Retire select(int emp_no) {
 		try(Connection conn = ConnectionProvider.getConnection()) {
 			
 			//해당 bs_num의 객체를 받아옴
-			Retire retire = retireDao.selectByNo(conn, emp_no);			
+			Retire retire = retireDao.selectByNo(conn, emp_no);
 			return retire;
 			
 		}catch(SQLException e) {

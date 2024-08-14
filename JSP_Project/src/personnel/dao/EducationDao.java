@@ -5,16 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
 
 import jdbc.JdbcUtil;
-import personnel.model.Appointment;
-import personnel.model.Career;
 import personnel.model.Education;
-import personnel.model.Family;
 
 public class EducationDao {
 	
@@ -77,11 +72,12 @@ public class EducationDao {
 	      }
 	   }
 	
-	public List<Education> selectAll(Connection conn) throws SQLException {
+	public List<Education> selectList(Connection conn, int no) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT * FROM Education");
+			pstmt = conn.prepareStatement("SELECT * FROM Education where emp_no=?");
+			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
 			List<Education> result = new ArrayList<>();
 			while (rs.next()) {

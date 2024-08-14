@@ -220,8 +220,5 @@ public class CompanyRequest {
 		if(value == null || value.isEmpty())
 			errors.put(fieldName, Boolean.TRUE);
 	}
-	private void checkEmpty(Map<String, Boolean> errors, Date value, String fieldName) {
-		if(value == null || value.toString().isEmpty())
-			errors.put(fieldName, Boolean.TRUE);
-	}
+
 }

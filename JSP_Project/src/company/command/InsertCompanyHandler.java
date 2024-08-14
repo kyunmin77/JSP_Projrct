@@ -1,7 +1,7 @@
 package company.command;
 
-import java.text.SimpleDateFormat;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,11 +13,14 @@ import company.service.CompanyRequest;
 import company.service.InsertCompanyService;
 import company.service.SelectCompanyService;
 import mvc.command.CommandHandler;
+import personnel.model.Employee;
+import personnel.service.SelectEmployeeService;
 
 public class InsertCompanyHandler implements CommandHandler {
-	private static final String FORM_VIEW = "/WEB-INF/view/setting//userInfo.jsp";
+	private static final String FORM_VIEW = "/WEB-INF/view/setting/userInfo.jsp";
 	private InsertCompanyService insertService = new InsertCompanyService();
 	private SelectCompanyService selectService = new SelectCompanyService();
+	private SelectEmployeeService selectEmpService = new SelectEmployeeService();
 
 	// DATE형 입출력이 있을때 사용하세요
 	SimpleDateFormat fdate = new SimpleDateFormat("yyyy-MM-dd"); // 같은 형식으로 맞춰줌
@@ -39,12 +42,21 @@ public class InsertCompanyHandler implements CommandHandler {
 	}
 
 	private String processForm(HttpServletRequest req, HttpServletResponse res) {
+		
+		String cpn_name = selectService.selectLastCpn();
+		Company company = selectService.select(cpn_name);
+		Employee emp = selectEmpService.select(1);
 
-		Company company = selectService.select("1"); // #########
-
-		if (!(company == null)) {
+		if (company != null) {
 			req.setAttribute("company", company);
 		}
+		if (emp != null) {
+			req.setAttribute("employee", emp);
+			
+		}
+		
+		
+		
 		return FORM_VIEW;
 	}
 
@@ -103,15 +115,25 @@ public class InsertCompanyHandler implements CommandHandler {
 
 			// 작성과 DB에 저장이 성공적으로 완료되면 저장
 			Company company = insertService.insert(cpnReq);
-			// company를 Request 영역에 저장
-			req.setAttribute("company", company);
+
+			String cpn_name = selectService.selectLastCpn();
+			Company com = selectService.select(cpn_name);
+			Employee emp = selectEmpService.select(1);
+
+			if (com != null) {
+				req.setAttribute("company", com);
+			}
+			if (emp != null) {
+				req.setAttribute("employee", emp);
+				
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return FORM_VIEW; // 수정필요. 새창만들기? 리퀘스트에 올려서 팝업띄우기?
+		return FORM_VIEW; // 
 		// newArticleSuccess 주소를 반환
 	}
 

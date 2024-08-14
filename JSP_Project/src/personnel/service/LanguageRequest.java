@@ -1,18 +1,16 @@
 package personnel.service;
 
-import java.sql.Date;
-
 public class LanguageRequest {
 	private int emp_no;
 	private String lang_name;
 	private String lang_test;
 	private String lang_score;
-	private Date lang_date;
+	private String lang_date;
 	private String lang_read;
 	private String lang_listen;
 	private String lang_speak;
 	
-	public LanguageRequest(int emp_no, String lang_name, String lang_test, String lang_score, Date lang_date,
+	public LanguageRequest(int emp_no, String lang_name, String lang_test, String lang_score, String lang_date,
 			String lang_read, String lang_listen, String lang_speak) {
 		super();
 		this.emp_no = emp_no;
@@ -57,11 +55,11 @@ public class LanguageRequest {
 		this.lang_score = lang_score;
 	}
 
-	public Date getLang_date() {
+	public String getLang_date() {
 		return lang_date;
 	}
 
-	public void setLang_date(Date lang_date) {
+	public void setLang_date(String lang_date) {
 		this.lang_date = lang_date;
 	}
 

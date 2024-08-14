@@ -10,7 +10,6 @@ import java.util.List;
 
 import jdbc.JdbcUtil;
 import personnel.model.Language;
-import personnel.model.License;
 
 public class LanguageDao {
 	public Language insert(Connection conn, Language lng) throws SQLException{
@@ -23,7 +22,7 @@ public class LanguageDao {
 			pstmt.setString(2, lng.getLang_name());
 			pstmt.setString(3, lng.getLang_test());
 			pstmt.setString(4, lng.getLang_score());
-			pstmt.setDate(5, lng.getLang_date());
+			pstmt.setString(5, lng.getLang_date());
 			pstmt.setString(6, lng.getLang_read());
 			pstmt.setString(7, lng.getLang_listen());
 			pstmt.setString(8, lng.getLang_speak());
@@ -75,11 +74,12 @@ public class LanguageDao {
 	      }
 	   }
 	
-	public List<Language> selectAll(Connection conn) throws SQLException {
+	public List<Language> selectList(Connection conn, int no) throws SQLException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			pstmt = conn.prepareStatement("SELECT * FROM Language");
+			pstmt = conn.prepareStatement("SELECT * FROM Language where emp_no=?");
+			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
 			List<Language> result = new ArrayList<>();
 			while (rs.next()) {
@@ -98,7 +98,7 @@ public class LanguageDao {
                 rs.getString("lang_name"),
                 rs.getString("lang_test"),
                 rs.getString("lang_score"),
-                rs.getDate("lang_date"),
+                rs.getString("lang_date"),
                 rs.getString("lang_read"),
                 rs.getString("lang_listen"),
                 rs.getString("lang_speak")
